@@ -4,7 +4,10 @@ procedure Factorial10loop is
     i: Integer := 1;
 begin
 
-for i in range 1..7
+loop
+    acc := acc * i;
+    i := i + 1;
+end loop;
 
 -- Put_Line(Integer'Image(acc));
     

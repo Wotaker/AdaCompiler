@@ -4,16 +4,15 @@ P ZX
 
 RN
 
-U factorial10loop%b	factorial10loop.adb	ceb0b705 NE OO SU
+U factorial10loop%b	factorial10loop.adb	b73e75dd NE OO SU
 
-D factorial10loop.adb	20220123154829 ceb0b705 factorial10loop%b
+D factorial10loop.adb	20220123163348 b73e75dd factorial10loop%b
 D system.ads		20210408115627 4635ec04 system%s
 G a e
 G c Z b b [factorial10loop standard 1 11 none]
 X 1 factorial10loop.adb
-1U11*Factorial10loop 1b11 16l5 16t20
+1U11*Factorial10loop 1b11 14l5 14t20
 2b5 b_res{boolean}
-3i5 acc{integer} 9m5 9r12
-4i5 i{integer} 9r18 10m5 10r10 11r15
-7l1 Multiply 12l10 12e18
+3i5 acc{integer} 8m5 8r12
+4i5 i{integer} 8r18 9m5 9r10
 

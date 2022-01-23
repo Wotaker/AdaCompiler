@@ -218,7 +218,7 @@ def p_if(p):
         DeriveTree(MyToken("SEMICOLON", p[9]))
     ])
 
-def p_eslifs(p):
+def p_elsifs(p):
     """elsifs : elsifs elsif
               | empty"""
     if len(p) == 3:
@@ -241,23 +241,13 @@ def p_else(p):
         p[0] = DeriveTree("else", p[1])
 
 def p_loop(p):
-    """loop : WHILE bool_expr loop_body
-            | FOR IDENT IN expr DUB_DOT expr loop_body
-            | FOR IDENT OF IDENT loop_body"""
-    if len(p) == 3:
-        p[0] = DeriveTree("loop", [
-            DeriveTree(MyToken("WHILE", p[1])), p[2], p[3]
-        ])
-    elif len(p) == 8:
-        p[0] = DeriveTree("loop", [
-            DeriveTree(MyToken("FOR", p[1])), DeriveTree(MyToken("IDENT", p[2])),
-            DeriveTree(MyToken("IN", p[3])), p[4], DeriveTree(MyToken("DUB_DOT", p[5])), p[6], p[7]
-        ])
+    """loop : loop_body
+            | for_range loop_body
+            | while loop_body"""
+    if len(p) == 2:
+        p[0] = DeriveTree("loop", [p[1]])
     else:
-        p[0] = DeriveTree("loop", [
-            DeriveTree(MyToken("FOR", p[1])), DeriveTree(MyToken("IDENT", p[2])),
-            DeriveTree(MyToken("OF", p[3])), DeriveTree(MyToken("IDENT", p[4])), p[5]
-        ])
+        p[0] = DeriveTree("loop", [p[1], p[2]])
 
 def p_loop_body(p):
     """loop_body : LOOP statements END LOOP SEMICOLON"""
@@ -265,6 +255,17 @@ def p_loop_body(p):
         DeriveTree(MyToken("LOOP", p[1])), p[2], DeriveTree(MyToken("END", p[3])),
         DeriveTree(MyToken("LOOP", p[4])), DeriveTree(MyToken("SEMICOLON", p[5]))
     ])
+
+def p_for_range(p):
+    """for_range : FOR IDENT IN expr DUB_DOT expr"""
+    p[0] = DeriveTree("for_range", [
+        DeriveTree(MyToken("FOR", p[1])), DeriveTree(MyToken("IDENT", p[2])),
+        DeriveTree(MyToken("IN", p[3])), p[4], DeriveTree(MyToken("DUB_DOT", p[5])), p[6]
+    ])
+
+def p_while(p):
+    """while : WHILE bool_expr"""
+    p[0] = DeriveTree("while", [DeriveTree(MyToken("WHILE", p[1])), p[2]])
 
 # === Error Handling Productions ===
 # def p_error(p):
