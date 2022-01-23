@@ -6,7 +6,7 @@
 
 procedure Sdbx is
     bt: Boolean := TRUE;
-    bf: Boolean := FALSE;
+    bf: Boolean := FALSE and not bt;
     b_res: Boolean := TRUE;
 begin
     b_res := (not bf and bt) or bf;

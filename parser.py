@@ -161,32 +161,33 @@ def p_factor(p):
         p[0] = DeriveTree("factor", [DeriveTree(MyToken("NUMBER", p[1]))])
 
 def p_bool_expr(p):
-    """bool_expr : bools AND bools
-                 | bools OR bools
-                 | bools"""
-    if len(p) == 3:
+    """bool_expr : bool_term AND bool_term
+                 | bool_term OR bool_term
+                 | bool_term"""
+    if len(p) == 4:
         p[0] = DeriveTree("bool_expr", [p[1], DeriveTree(MyToken("AND" if p[2] == "and" else "OR", p[2])), p[3]])
     else:
         p[0] = DeriveTree("bool_expr", [p[1]])
 
-def p_bools(p):
-    """bools : LEFT_PAR bool_expr RIGHT_PAR
-             | LEFT_PAR bool RIGHT_PAR
-             | bool
-             | NOT bool"""
-    if len(p) == 4:
-        p[0] = DeriveTree("bools", [
-            DeriveTree(MyToken("LEFT_PAR", p[1])), p[2], DeriveTree(MyToken("RIGHT_PAR", p[3]))
-        ])
-    elif len(p) == 2:
-        p[0] = DeriveTree("bools", [p[1]])
+def p_bool_term(p):
+    """bool_term : NOT bool
+                 | bool"""
+    if len(p) == 3:
+        p[0] = DeriveTree("bool_term", [DeriveTree(MyToken("NOT", p[1])), p[2]])
     else:
-        p[0] = DeriveTree("bools", [DeriveTree(MyToken("NOT", p[1])), p[2]])
+        p[0] = DeriveTree("bool_term", [p[1]])
 
 def p_bool(p):
-    """bool : BOOL_T
-            | BOOL_F"""
-    p[0] = DeriveTree("bool", [DeriveTree(MyToken("BOOL_T" if p[1] == "TRUE" else "BOOL_F", p[1]))])
+    """bool : LEFT_PAR bool_expr RIGHT_PAR
+            | BOOL_VAL
+            | IDENT"""
+    if len(p) == 4:
+        p[0] = DeriveTree("bool", [DeriveTree(MyToken("LEFT_PAR", p[1])), p[2],
+        DeriveTree(MyToken("RIGHT_PAR", p[3]))])
+    elif p[1] == "TRUE" or p[1] == "FALSE":
+        p[0] = DeriveTree("bool", [DeriveTree(MyToken("BOOL_VAL", p[1]))])
+    else:
+        p[0] = DeriveTree("bool", [DeriveTree(MyToken("IDENT", p[1]))])
 
 def p_statements(p):
     """statements : statements statement

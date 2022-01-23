@@ -79,21 +79,19 @@ class CCG():
 
     def gen_bool_expr(self, bool_expr):
         if len(bool_expr.childs) == 1:
-            return self.gen_bools(bool_expr.childs[0])
+            return self.gen_bool_term(bool_expr.childs[0])
         sign = "||" if bool_expr.childs[1].node.value == "or" else "&&"
-        return self.gen_bools(bool_expr.childs[0]) + f" {sign} " + bool_expr.childs[1].node.value \
-            + self.gen_bools(bool_expr.childs[0])
+        return self.gen_bool_term(bool_expr.childs[0]) + f" {sign} " + self.gen_bool_term(bool_expr.childs[2])
 
-    def gen_bools(self, bools):
-        if len(bools.childs) == 3:
-            insertion = self.gen_bool_expr(bools.childs[1]) if str(bools.childs[1]) == "bool_expr" else \
-                self.gen_bool(bools.childs[1])
-            return f"({insertion})"
-        else:
-            return ("!" if len(bools.childs) == 2 else "") + self.gen_bool(bools.childs[-1])
+    def gen_bool_term(self, bool_term):
+        return ("!" if len(bool_term.childs) == 2 else "") + self.gen_bool(bool_term.childs[-1])
 
-    def gen_bool(self, boolean):
-        return "0" if boolean.childs[0].node.value == "FALSE" else "1"
+    def gen_bool(self, bool_factor):
+        if len(bool_factor.childs) == 3:
+            return f"({self.gen_bool_expr(bool_factor.childs[1])})"
+        if bool_factor.childs[0].node.name == "IDENT":
+            return bool_factor.childs[0].node.value
+        return "0" if bool_factor.childs[0].node.value == "FALSE" else "1"
 
     def gen_statements(self, statements):
         pass

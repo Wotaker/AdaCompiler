@@ -40,8 +40,8 @@ reserved = {
     'while':        'WHILE',
     'with':         'WITH',
     'xor':          'XOR',
-    'TRUE':         'BOOL_T',
-    'FALSE':        'BOOL_F',
+    'TRUE':         'BOOL_VAL',
+    'FALSE':        'BOOL_VAL',
     'Integer':      'TYPE_INT',
     'Boolean':      'TYPE_BOOL',
     'Float':        'TYPE_FLOAT'
