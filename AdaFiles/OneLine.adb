@@ -1,0 +1,1 @@
+with Ada.Text_IO;use Ada.Text_IO;procedure Main is Alpha:Integer:=1;begin Put_Line("Alpha"&Integer'Image (Alpha));end Main;

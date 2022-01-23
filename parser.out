@@ -1,0 +1,1861 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ABS
+    AMPERSAND
+    APOSTROPHE
+    ARRAY
+    BOOL
+    COMMENT
+    DECLARE
+    EQUALS
+    FUNC
+    GREATER
+    GTEQ
+    LEFT_CUR_PAR
+    LEFT_SQ_PAR
+    LESS
+    LSEQ
+    MOD
+    NOT_EQUALS
+    NULL
+    POW
+    QUOTE
+    RETURN
+    REVERSE
+    RIGHT_CUR_PAR
+    RIGHT_SQ_PAR
+    TYPE
+    XOR
+
+Grammar
+
+Rule 0     S' -> prog
+Rule 1     empty -> <empty>
+Rule 2     prog -> subprogram
+Rule 3     prog -> headers subprogram
+Rule 4     headers -> headers header
+Rule 5     headers -> header
+Rule 6     header -> WITH pkg SEMICOLON
+Rule 7     header -> WITH pkg SEMICOLON USE pkg SEMICOLON
+Rule 8     pkg -> pkg DOT IDENT
+Rule 9     pkg -> IDENT
+Rule 10    subprogram -> procedure
+Rule 11    subprogram -> function
+Rule 12    function -> IDENT
+Rule 13    procedure -> PROC IDENT args_opt IS declarations BEGIN statements END IDENT SEMICOLON
+Rule 14    args_opt -> LEFT_PAR args RIGHT_PAR
+Rule 15    args_opt -> empty
+Rule 16    args -> args COMMA arg
+Rule 17    args -> arg
+Rule 18    arg -> IDENT COLON type
+Rule 19    type -> TYPE_INT
+Rule 20    type -> TYPE_FLOAT
+Rule 21    type -> TYPE_BOOL
+Rule 22    declarations -> declarations declaration
+Rule 23    declarations -> declaration
+Rule 24    declaration -> IDENT COLON type ASSIGN value SEMICOLON
+Rule 25    value -> expr
+Rule 26    value -> bool_expr
+Rule 27    expr -> expr PLUS term
+Rule 28    expr -> expr MINUS term
+Rule 29    expr -> term
+Rule 30    term -> term MUL factor
+Rule 31    term -> term DIV factor
+Rule 32    term -> factor
+Rule 33    factor -> LEFT_PAR expr RIGHT_PAR
+Rule 34    factor -> IDENT
+Rule 35    factor -> NUMBER
+Rule 36    bool_expr -> bools AND bools
+Rule 37    bool_expr -> bools OR bools
+Rule 38    bool_expr -> bools
+Rule 39    bools -> LEFT_PAR bool_expr RIGHT_PAR
+Rule 40    bools -> LEFT_PAR bool RIGHT_PAR
+Rule 41    bools -> bool
+Rule 42    bools -> NOT bool
+Rule 43    bool -> BOOL_T
+Rule 44    bool -> BOOL_F
+Rule 45    statements -> statements statement
+Rule 46    statements -> statement
+Rule 47    statement -> assign
+Rule 48    statement -> if
+Rule 49    statement -> loop
+Rule 50    assign -> IDENT ASSIGN value SEMICOLON
+Rule 51    if -> IF bool_expr THEN statements elsifs else END IF SEMICOLON
+Rule 52    elsifs -> elsifs elsif
+Rule 53    elsifs -> empty
+Rule 54    elsif -> ELSIF bool_expr THEN statements
+Rule 55    else -> ELSE statements
+Rule 56    else -> empty
+Rule 57    loop -> WHILE bool_expr loop_body
+Rule 58    loop -> FOR IDENT IN expr DUB_DOT expr loop_body
+Rule 59    loop -> FOR IDENT OF IDENT loop_body
+Rule 60    loop_body -> LOOP statements END LOOP SEMICOLON
+
+Terminals, with rules where they appear
+
+ABS                  : 
+AMPERSAND            : 
+AND                  : 36
+APOSTROPHE           : 
+ARRAY                : 
+ASSIGN               : 24 50
+BEGIN                : 13
+BOOL                 : 
+BOOL_F               : 44
+BOOL_T               : 43
+COLON                : 18 24
+COMMA                : 16
+COMMENT              : 
+DECLARE              : 
+DIV                  : 31
+DOT                  : 8
+DUB_DOT              : 58
+ELSE                 : 55
+ELSIF                : 54
+END                  : 13 51 60
+EQUALS               : 
+FOR                  : 58 59
+FUNC                 : 
+GREATER              : 
+GTEQ                 : 
+IDENT                : 8 9 12 13 13 18 24 34 50 58 59 59
+IF                   : 51 51
+IN                   : 58
+IS                   : 13
+LEFT_CUR_PAR         : 
+LEFT_PAR             : 14 33 39 40
+LEFT_SQ_PAR          : 
+LESS                 : 
+LOOP                 : 60 60
+LSEQ                 : 
+MINUS                : 28
+MOD                  : 
+MUL                  : 30
+NOT                  : 42
+NOT_EQUALS           : 
+NULL                 : 
+NUMBER               : 35
+OF                   : 59
+OR                   : 37
+PLUS                 : 27
+POW                  : 
+PROC                 : 13
+QUOTE                : 
+RETURN               : 
+REVERSE              : 
+RIGHT_CUR_PAR        : 
+RIGHT_PAR            : 14 33 39 40
+RIGHT_SQ_PAR         : 
+SEMICOLON            : 6 7 7 13 24 50 51 60
+THEN                 : 51 54
+TYPE                 : 
+TYPE_BOOL            : 21
+TYPE_FLOAT           : 20
+TYPE_INT             : 19
+USE                  : 7
+WHILE                : 57
+WITH                 : 6 7
+XOR                  : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+arg                  : 16 17
+args                 : 14 16
+args_opt             : 13
+assign               : 47
+bool                 : 40 41 42
+bool_expr            : 26 39 51 54 57
+bools                : 36 36 37 37 38
+declaration          : 22 23
+declarations         : 13 22
+else                 : 51
+elsif                : 52
+elsifs               : 51 52
+empty                : 15 53 56
+expr                 : 25 27 28 33 58 58
+factor               : 30 31 32
+function             : 11
+header               : 4 5
+headers              : 3 4
+if                   : 48
+loop                 : 49
+loop_body            : 57 58 59
+pkg                  : 6 7 7 8
+procedure            : 10
+prog                 : 0
+statement            : 45 46
+statements           : 13 45 51 54 55 60
+subprogram           : 2 3
+term                 : 27 28 29 30 31
+type                 : 18 24
+value                : 24 50
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . prog
+    (2) prog -> . subprogram
+    (3) prog -> . headers subprogram
+    (10) subprogram -> . procedure
+    (11) subprogram -> . function
+    (4) headers -> . headers header
+    (5) headers -> . header
+    (13) procedure -> . PROC IDENT args_opt IS declarations BEGIN statements END IDENT SEMICOLON
+    (12) function -> . IDENT
+    (6) header -> . WITH pkg SEMICOLON
+    (7) header -> . WITH pkg SEMICOLON USE pkg SEMICOLON
+
+    PROC            shift and go to state 7
+    IDENT           shift and go to state 8
+    WITH            shift and go to state 9
+
+    prog                           shift and go to state 1
+    subprogram                     shift and go to state 2
+    headers                        shift and go to state 3
+    procedure                      shift and go to state 4
+    function                       shift and go to state 5
+    header                         shift and go to state 6
+
+state 1
+
+    (0) S' -> prog .
+
+
+
+state 2
+
+    (2) prog -> subprogram .
+
+    $end            reduce using rule 2 (prog -> subprogram .)
+
+
+state 3
+
+    (3) prog -> headers . subprogram
+    (4) headers -> headers . header
+    (10) subprogram -> . procedure
+    (11) subprogram -> . function
+    (6) header -> . WITH pkg SEMICOLON
+    (7) header -> . WITH pkg SEMICOLON USE pkg SEMICOLON
+    (13) procedure -> . PROC IDENT args_opt IS declarations BEGIN statements END IDENT SEMICOLON
+    (12) function -> . IDENT
+
+    WITH            shift and go to state 9
+    PROC            shift and go to state 7
+    IDENT           shift and go to state 8
+
+    subprogram                     shift and go to state 10
+    header                         shift and go to state 11
+    procedure                      shift and go to state 4
+    function                       shift and go to state 5
+
+state 4
+
+    (10) subprogram -> procedure .
+
+    $end            reduce using rule 10 (subprogram -> procedure .)
+
+
+state 5
+
+    (11) subprogram -> function .
+
+    $end            reduce using rule 11 (subprogram -> function .)
+
+
+state 6
+
+    (5) headers -> header .
+
+    WITH            reduce using rule 5 (headers -> header .)
+    PROC            reduce using rule 5 (headers -> header .)
+    IDENT           reduce using rule 5 (headers -> header .)
+
+
+state 7
+
+    (13) procedure -> PROC . IDENT args_opt IS declarations BEGIN statements END IDENT SEMICOLON
+
+    IDENT           shift and go to state 12
+
+
+state 8
+
+    (12) function -> IDENT .
+
+    $end            reduce using rule 12 (function -> IDENT .)
+
+
+state 9
+
+    (6) header -> WITH . pkg SEMICOLON
+    (7) header -> WITH . pkg SEMICOLON USE pkg SEMICOLON
+    (8) pkg -> . pkg DOT IDENT
+    (9) pkg -> . IDENT
+
+    IDENT           shift and go to state 14
+
+    pkg                            shift and go to state 13
+
+state 10
+
+    (3) prog -> headers subprogram .
+
+    $end            reduce using rule 3 (prog -> headers subprogram .)
+
+
+state 11
+
+    (4) headers -> headers header .
+
+    WITH            reduce using rule 4 (headers -> headers header .)
+    PROC            reduce using rule 4 (headers -> headers header .)
+    IDENT           reduce using rule 4 (headers -> headers header .)
+
+
+state 12
+
+    (13) procedure -> PROC IDENT . args_opt IS declarations BEGIN statements END IDENT SEMICOLON
+    (14) args_opt -> . LEFT_PAR args RIGHT_PAR
+    (15) args_opt -> . empty
+    (1) empty -> .
+
+    LEFT_PAR        shift and go to state 16
+    IS              reduce using rule 1 (empty -> .)
+
+    args_opt                       shift and go to state 15
+    empty                          shift and go to state 17
+
+state 13
+
+    (6) header -> WITH pkg . SEMICOLON
+    (7) header -> WITH pkg . SEMICOLON USE pkg SEMICOLON
+    (8) pkg -> pkg . DOT IDENT
+
+    SEMICOLON       shift and go to state 18
+    DOT             shift and go to state 19
+
+
+state 14
+
+    (9) pkg -> IDENT .
+
+    SEMICOLON       reduce using rule 9 (pkg -> IDENT .)
+    DOT             reduce using rule 9 (pkg -> IDENT .)
+
+
+state 15
+
+    (13) procedure -> PROC IDENT args_opt . IS declarations BEGIN statements END IDENT SEMICOLON
+
+    IS              shift and go to state 20
+
+
+state 16
+
+    (14) args_opt -> LEFT_PAR . args RIGHT_PAR
+    (16) args -> . args COMMA arg
+    (17) args -> . arg
+    (18) arg -> . IDENT COLON type
+
+    IDENT           shift and go to state 23
+
+    args                           shift and go to state 21
+    arg                            shift and go to state 22
+
+state 17
+
+    (15) args_opt -> empty .
+
+    IS              reduce using rule 15 (args_opt -> empty .)
+
+
+state 18
+
+    (6) header -> WITH pkg SEMICOLON .
+    (7) header -> WITH pkg SEMICOLON . USE pkg SEMICOLON
+
+    WITH            reduce using rule 6 (header -> WITH pkg SEMICOLON .)
+    PROC            reduce using rule 6 (header -> WITH pkg SEMICOLON .)
+    IDENT           reduce using rule 6 (header -> WITH pkg SEMICOLON .)
+    USE             shift and go to state 24
+
+
+state 19
+
+    (8) pkg -> pkg DOT . IDENT
+
+    IDENT           shift and go to state 25
+
+
+state 20
+
+    (13) procedure -> PROC IDENT args_opt IS . declarations BEGIN statements END IDENT SEMICOLON
+    (22) declarations -> . declarations declaration
+    (23) declarations -> . declaration
+    (24) declaration -> . IDENT COLON type ASSIGN value SEMICOLON
+
+    IDENT           shift and go to state 26
+
+    declarations                   shift and go to state 27
+    declaration                    shift and go to state 28
+
+state 21
+
+    (14) args_opt -> LEFT_PAR args . RIGHT_PAR
+    (16) args -> args . COMMA arg
+
+    RIGHT_PAR       shift and go to state 29
+    COMMA           shift and go to state 30
+
+
+state 22
+
+    (17) args -> arg .
+
+    RIGHT_PAR       reduce using rule 17 (args -> arg .)
+    COMMA           reduce using rule 17 (args -> arg .)
+
+
+state 23
+
+    (18) arg -> IDENT . COLON type
+
+    COLON           shift and go to state 31
+
+
+state 24
+
+    (7) header -> WITH pkg SEMICOLON USE . pkg SEMICOLON
+    (8) pkg -> . pkg DOT IDENT
+    (9) pkg -> . IDENT
+
+    IDENT           shift and go to state 14
+
+    pkg                            shift and go to state 32
+
+state 25
+
+    (8) pkg -> pkg DOT IDENT .
+
+    SEMICOLON       reduce using rule 8 (pkg -> pkg DOT IDENT .)
+    DOT             reduce using rule 8 (pkg -> pkg DOT IDENT .)
+
+
+state 26
+
+    (24) declaration -> IDENT . COLON type ASSIGN value SEMICOLON
+
+    COLON           shift and go to state 33
+
+
+state 27
+
+    (13) procedure -> PROC IDENT args_opt IS declarations . BEGIN statements END IDENT SEMICOLON
+    (22) declarations -> declarations . declaration
+    (24) declaration -> . IDENT COLON type ASSIGN value SEMICOLON
+
+    BEGIN           shift and go to state 34
+    IDENT           shift and go to state 26
+
+    declaration                    shift and go to state 35
+
+state 28
+
+    (23) declarations -> declaration .
+
+    BEGIN           reduce using rule 23 (declarations -> declaration .)
+    IDENT           reduce using rule 23 (declarations -> declaration .)
+
+
+state 29
+
+    (14) args_opt -> LEFT_PAR args RIGHT_PAR .
+
+    IS              reduce using rule 14 (args_opt -> LEFT_PAR args RIGHT_PAR .)
+
+
+state 30
+
+    (16) args -> args COMMA . arg
+    (18) arg -> . IDENT COLON type
+
+    IDENT           shift and go to state 23
+
+    arg                            shift and go to state 36
+
+state 31
+
+    (18) arg -> IDENT COLON . type
+    (19) type -> . TYPE_INT
+    (20) type -> . TYPE_FLOAT
+    (21) type -> . TYPE_BOOL
+
+    TYPE_INT        shift and go to state 38
+    TYPE_FLOAT      shift and go to state 39
+    TYPE_BOOL       shift and go to state 40
+
+    type                           shift and go to state 37
+
+state 32
+
+    (7) header -> WITH pkg SEMICOLON USE pkg . SEMICOLON
+    (8) pkg -> pkg . DOT IDENT
+
+    SEMICOLON       shift and go to state 41
+    DOT             shift and go to state 19
+
+
+state 33
+
+    (24) declaration -> IDENT COLON . type ASSIGN value SEMICOLON
+    (19) type -> . TYPE_INT
+    (20) type -> . TYPE_FLOAT
+    (21) type -> . TYPE_BOOL
+
+    TYPE_INT        shift and go to state 38
+    TYPE_FLOAT      shift and go to state 39
+    TYPE_BOOL       shift and go to state 40
+
+    type                           shift and go to state 42
+
+state 34
+
+    (13) procedure -> PROC IDENT args_opt IS declarations BEGIN . statements END IDENT SEMICOLON
+    (45) statements -> . statements statement
+    (46) statements -> . statement
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    statements                     shift and go to state 44
+    statement                      shift and go to state 45
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+
+state 35
+
+    (22) declarations -> declarations declaration .
+
+    BEGIN           reduce using rule 22 (declarations -> declarations declaration .)
+    IDENT           reduce using rule 22 (declarations -> declarations declaration .)
+
+
+state 36
+
+    (16) args -> args COMMA arg .
+
+    RIGHT_PAR       reduce using rule 16 (args -> args COMMA arg .)
+    COMMA           reduce using rule 16 (args -> args COMMA arg .)
+
+
+state 37
+
+    (18) arg -> IDENT COLON type .
+
+    RIGHT_PAR       reduce using rule 18 (arg -> IDENT COLON type .)
+    COMMA           reduce using rule 18 (arg -> IDENT COLON type .)
+
+
+state 38
+
+    (19) type -> TYPE_INT .
+
+    RIGHT_PAR       reduce using rule 19 (type -> TYPE_INT .)
+    COMMA           reduce using rule 19 (type -> TYPE_INT .)
+    ASSIGN          reduce using rule 19 (type -> TYPE_INT .)
+
+
+state 39
+
+    (20) type -> TYPE_FLOAT .
+
+    RIGHT_PAR       reduce using rule 20 (type -> TYPE_FLOAT .)
+    COMMA           reduce using rule 20 (type -> TYPE_FLOAT .)
+    ASSIGN          reduce using rule 20 (type -> TYPE_FLOAT .)
+
+
+state 40
+
+    (21) type -> TYPE_BOOL .
+
+    RIGHT_PAR       reduce using rule 21 (type -> TYPE_BOOL .)
+    COMMA           reduce using rule 21 (type -> TYPE_BOOL .)
+    ASSIGN          reduce using rule 21 (type -> TYPE_BOOL .)
+
+
+state 41
+
+    (7) header -> WITH pkg SEMICOLON USE pkg SEMICOLON .
+
+    WITH            reduce using rule 7 (header -> WITH pkg SEMICOLON USE pkg SEMICOLON .)
+    PROC            reduce using rule 7 (header -> WITH pkg SEMICOLON USE pkg SEMICOLON .)
+    IDENT           reduce using rule 7 (header -> WITH pkg SEMICOLON USE pkg SEMICOLON .)
+
+
+state 42
+
+    (24) declaration -> IDENT COLON type . ASSIGN value SEMICOLON
+
+    ASSIGN          shift and go to state 52
+
+
+state 43
+
+    (50) assign -> IDENT . ASSIGN value SEMICOLON
+
+    ASSIGN          shift and go to state 53
+
+
+state 44
+
+    (13) procedure -> PROC IDENT args_opt IS declarations BEGIN statements . END IDENT SEMICOLON
+    (45) statements -> statements . statement
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    END             shift and go to state 54
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    statement                      shift and go to state 55
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+
+state 45
+
+    (46) statements -> statement .
+
+    END             reduce using rule 46 (statements -> statement .)
+    IDENT           reduce using rule 46 (statements -> statement .)
+    IF              reduce using rule 46 (statements -> statement .)
+    WHILE           reduce using rule 46 (statements -> statement .)
+    FOR             reduce using rule 46 (statements -> statement .)
+    ELSE            reduce using rule 46 (statements -> statement .)
+    ELSIF           reduce using rule 46 (statements -> statement .)
+
+
+state 46
+
+    (47) statement -> assign .
+
+    END             reduce using rule 47 (statement -> assign .)
+    IDENT           reduce using rule 47 (statement -> assign .)
+    IF              reduce using rule 47 (statement -> assign .)
+    WHILE           reduce using rule 47 (statement -> assign .)
+    FOR             reduce using rule 47 (statement -> assign .)
+    ELSE            reduce using rule 47 (statement -> assign .)
+    ELSIF           reduce using rule 47 (statement -> assign .)
+
+
+state 47
+
+    (48) statement -> if .
+
+    END             reduce using rule 48 (statement -> if .)
+    IDENT           reduce using rule 48 (statement -> if .)
+    IF              reduce using rule 48 (statement -> if .)
+    WHILE           reduce using rule 48 (statement -> if .)
+    FOR             reduce using rule 48 (statement -> if .)
+    ELSE            reduce using rule 48 (statement -> if .)
+    ELSIF           reduce using rule 48 (statement -> if .)
+
+
+state 48
+
+    (49) statement -> loop .
+
+    END             reduce using rule 49 (statement -> loop .)
+    IDENT           reduce using rule 49 (statement -> loop .)
+    IF              reduce using rule 49 (statement -> loop .)
+    WHILE           reduce using rule 49 (statement -> loop .)
+    FOR             reduce using rule 49 (statement -> loop .)
+    ELSE            reduce using rule 49 (statement -> loop .)
+    ELSIF           reduce using rule 49 (statement -> loop .)
+
+
+state 49
+
+    (51) if -> IF . bool_expr THEN statements elsifs else END IF SEMICOLON
+    (36) bool_expr -> . bools AND bools
+    (37) bool_expr -> . bools OR bools
+    (38) bool_expr -> . bools
+    (39) bools -> . LEFT_PAR bool_expr RIGHT_PAR
+    (40) bools -> . LEFT_PAR bool RIGHT_PAR
+    (41) bools -> . bool
+    (42) bools -> . NOT bool
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+
+    LEFT_PAR        shift and go to state 58
+    NOT             shift and go to state 60
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+
+    bool_expr                      shift and go to state 56
+    bools                          shift and go to state 57
+    bool                           shift and go to state 59
+
+state 50
+
+    (57) loop -> WHILE . bool_expr loop_body
+    (36) bool_expr -> . bools AND bools
+    (37) bool_expr -> . bools OR bools
+    (38) bool_expr -> . bools
+    (39) bools -> . LEFT_PAR bool_expr RIGHT_PAR
+    (40) bools -> . LEFT_PAR bool RIGHT_PAR
+    (41) bools -> . bool
+    (42) bools -> . NOT bool
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+
+    LEFT_PAR        shift and go to state 58
+    NOT             shift and go to state 60
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+
+    bool_expr                      shift and go to state 63
+    bools                          shift and go to state 57
+    bool                           shift and go to state 59
+
+state 51
+
+    (58) loop -> FOR . IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> FOR . IDENT OF IDENT loop_body
+
+    IDENT           shift and go to state 64
+
+
+state 52
+
+    (24) declaration -> IDENT COLON type ASSIGN . value SEMICOLON
+    (25) value -> . expr
+    (26) value -> . bool_expr
+    (27) expr -> . expr PLUS term
+    (28) expr -> . expr MINUS term
+    (29) expr -> . term
+    (36) bool_expr -> . bools AND bools
+    (37) bool_expr -> . bools OR bools
+    (38) bool_expr -> . bools
+    (30) term -> . term MUL factor
+    (31) term -> . term DIV factor
+    (32) term -> . factor
+    (39) bools -> . LEFT_PAR bool_expr RIGHT_PAR
+    (40) bools -> . LEFT_PAR bool RIGHT_PAR
+    (41) bools -> . bool
+    (42) bools -> . NOT bool
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+
+    LEFT_PAR        shift and go to state 71
+    NOT             shift and go to state 60
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+
+    value                          shift and go to state 66
+    expr                           shift and go to state 67
+    bool_expr                      shift and go to state 68
+    term                           shift and go to state 69
+    bools                          shift and go to state 57
+    factor                         shift and go to state 70
+    bool                           shift and go to state 59
+
+state 53
+
+    (50) assign -> IDENT ASSIGN . value SEMICOLON
+    (25) value -> . expr
+    (26) value -> . bool_expr
+    (27) expr -> . expr PLUS term
+    (28) expr -> . expr MINUS term
+    (29) expr -> . term
+    (36) bool_expr -> . bools AND bools
+    (37) bool_expr -> . bools OR bools
+    (38) bool_expr -> . bools
+    (30) term -> . term MUL factor
+    (31) term -> . term DIV factor
+    (32) term -> . factor
+    (39) bools -> . LEFT_PAR bool_expr RIGHT_PAR
+    (40) bools -> . LEFT_PAR bool RIGHT_PAR
+    (41) bools -> . bool
+    (42) bools -> . NOT bool
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+
+    LEFT_PAR        shift and go to state 71
+    NOT             shift and go to state 60
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+
+    value                          shift and go to state 73
+    expr                           shift and go to state 67
+    bool_expr                      shift and go to state 68
+    term                           shift and go to state 69
+    bools                          shift and go to state 57
+    factor                         shift and go to state 70
+    bool                           shift and go to state 59
+
+state 54
+
+    (13) procedure -> PROC IDENT args_opt IS declarations BEGIN statements END . IDENT SEMICOLON
+
+    IDENT           shift and go to state 74
+
+
+state 55
+
+    (45) statements -> statements statement .
+
+    END             reduce using rule 45 (statements -> statements statement .)
+    IDENT           reduce using rule 45 (statements -> statements statement .)
+    IF              reduce using rule 45 (statements -> statements statement .)
+    WHILE           reduce using rule 45 (statements -> statements statement .)
+    FOR             reduce using rule 45 (statements -> statements statement .)
+    ELSE            reduce using rule 45 (statements -> statements statement .)
+    ELSIF           reduce using rule 45 (statements -> statements statement .)
+
+
+state 56
+
+    (51) if -> IF bool_expr . THEN statements elsifs else END IF SEMICOLON
+
+    THEN            shift and go to state 75
+
+
+state 57
+
+    (36) bool_expr -> bools . AND bools
+    (37) bool_expr -> bools . OR bools
+    (38) bool_expr -> bools .
+
+    AND             shift and go to state 76
+    OR              shift and go to state 77
+    THEN            reduce using rule 38 (bool_expr -> bools .)
+    LOOP            reduce using rule 38 (bool_expr -> bools .)
+    SEMICOLON       reduce using rule 38 (bool_expr -> bools .)
+    RIGHT_PAR       reduce using rule 38 (bool_expr -> bools .)
+
+
+state 58
+
+    (39) bools -> LEFT_PAR . bool_expr RIGHT_PAR
+    (40) bools -> LEFT_PAR . bool RIGHT_PAR
+    (36) bool_expr -> . bools AND bools
+    (37) bool_expr -> . bools OR bools
+    (38) bool_expr -> . bools
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+    (39) bools -> . LEFT_PAR bool_expr RIGHT_PAR
+    (40) bools -> . LEFT_PAR bool RIGHT_PAR
+    (41) bools -> . bool
+    (42) bools -> . NOT bool
+
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+    LEFT_PAR        shift and go to state 58
+    NOT             shift and go to state 60
+
+    bool_expr                      shift and go to state 78
+    bool                           shift and go to state 79
+    bools                          shift and go to state 57
+
+state 59
+
+    (41) bools -> bool .
+
+    AND             reduce using rule 41 (bools -> bool .)
+    OR              reduce using rule 41 (bools -> bool .)
+    THEN            reduce using rule 41 (bools -> bool .)
+    LOOP            reduce using rule 41 (bools -> bool .)
+    SEMICOLON       reduce using rule 41 (bools -> bool .)
+    RIGHT_PAR       reduce using rule 41 (bools -> bool .)
+
+
+state 60
+
+    (42) bools -> NOT . bool
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+
+    bool                           shift and go to state 80
+
+state 61
+
+    (43) bool -> BOOL_T .
+
+    AND             reduce using rule 43 (bool -> BOOL_T .)
+    OR              reduce using rule 43 (bool -> BOOL_T .)
+    THEN            reduce using rule 43 (bool -> BOOL_T .)
+    LOOP            reduce using rule 43 (bool -> BOOL_T .)
+    SEMICOLON       reduce using rule 43 (bool -> BOOL_T .)
+    RIGHT_PAR       reduce using rule 43 (bool -> BOOL_T .)
+
+
+state 62
+
+    (44) bool -> BOOL_F .
+
+    AND             reduce using rule 44 (bool -> BOOL_F .)
+    OR              reduce using rule 44 (bool -> BOOL_F .)
+    THEN            reduce using rule 44 (bool -> BOOL_F .)
+    LOOP            reduce using rule 44 (bool -> BOOL_F .)
+    SEMICOLON       reduce using rule 44 (bool -> BOOL_F .)
+    RIGHT_PAR       reduce using rule 44 (bool -> BOOL_F .)
+
+
+state 63
+
+    (57) loop -> WHILE bool_expr . loop_body
+    (60) loop_body -> . LOOP statements END LOOP SEMICOLON
+
+    LOOP            shift and go to state 82
+
+    loop_body                      shift and go to state 81
+
+state 64
+
+    (58) loop -> FOR IDENT . IN expr DUB_DOT expr loop_body
+    (59) loop -> FOR IDENT . OF IDENT loop_body
+
+    IN              shift and go to state 83
+    OF              shift and go to state 84
+
+
+state 65
+
+    (34) factor -> IDENT .
+
+    MUL             reduce using rule 34 (factor -> IDENT .)
+    DIV             reduce using rule 34 (factor -> IDENT .)
+    PLUS            reduce using rule 34 (factor -> IDENT .)
+    MINUS           reduce using rule 34 (factor -> IDENT .)
+    SEMICOLON       reduce using rule 34 (factor -> IDENT .)
+    RIGHT_PAR       reduce using rule 34 (factor -> IDENT .)
+    DUB_DOT         reduce using rule 34 (factor -> IDENT .)
+    LOOP            reduce using rule 34 (factor -> IDENT .)
+
+
+state 66
+
+    (24) declaration -> IDENT COLON type ASSIGN value . SEMICOLON
+
+    SEMICOLON       shift and go to state 85
+
+
+state 67
+
+    (25) value -> expr .
+    (27) expr -> expr . PLUS term
+    (28) expr -> expr . MINUS term
+
+    SEMICOLON       reduce using rule 25 (value -> expr .)
+    PLUS            shift and go to state 86
+    MINUS           shift and go to state 87
+
+
+state 68
+
+    (26) value -> bool_expr .
+
+    SEMICOLON       reduce using rule 26 (value -> bool_expr .)
+
+
+state 69
+
+    (29) expr -> term .
+    (30) term -> term . MUL factor
+    (31) term -> term . DIV factor
+
+    PLUS            reduce using rule 29 (expr -> term .)
+    MINUS           reduce using rule 29 (expr -> term .)
+    SEMICOLON       reduce using rule 29 (expr -> term .)
+    RIGHT_PAR       reduce using rule 29 (expr -> term .)
+    DUB_DOT         reduce using rule 29 (expr -> term .)
+    LOOP            reduce using rule 29 (expr -> term .)
+    MUL             shift and go to state 88
+    DIV             shift and go to state 89
+
+
+state 70
+
+    (32) term -> factor .
+
+    MUL             reduce using rule 32 (term -> factor .)
+    DIV             reduce using rule 32 (term -> factor .)
+    PLUS            reduce using rule 32 (term -> factor .)
+    MINUS           reduce using rule 32 (term -> factor .)
+    SEMICOLON       reduce using rule 32 (term -> factor .)
+    RIGHT_PAR       reduce using rule 32 (term -> factor .)
+    DUB_DOT         reduce using rule 32 (term -> factor .)
+    LOOP            reduce using rule 32 (term -> factor .)
+
+
+state 71
+
+    (39) bools -> LEFT_PAR . bool_expr RIGHT_PAR
+    (40) bools -> LEFT_PAR . bool RIGHT_PAR
+    (33) factor -> LEFT_PAR . expr RIGHT_PAR
+    (36) bool_expr -> . bools AND bools
+    (37) bool_expr -> . bools OR bools
+    (38) bool_expr -> . bools
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+    (27) expr -> . expr PLUS term
+    (28) expr -> . expr MINUS term
+    (29) expr -> . term
+    (39) bools -> . LEFT_PAR bool_expr RIGHT_PAR
+    (40) bools -> . LEFT_PAR bool RIGHT_PAR
+    (41) bools -> . bool
+    (42) bools -> . NOT bool
+    (30) term -> . term MUL factor
+    (31) term -> . term DIV factor
+    (32) term -> . factor
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+    LEFT_PAR        shift and go to state 71
+    NOT             shift and go to state 60
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+
+    bool_expr                      shift and go to state 78
+    bool                           shift and go to state 79
+    expr                           shift and go to state 90
+    bools                          shift and go to state 57
+    term                           shift and go to state 69
+    factor                         shift and go to state 70
+
+state 72
+
+    (35) factor -> NUMBER .
+
+    MUL             reduce using rule 35 (factor -> NUMBER .)
+    DIV             reduce using rule 35 (factor -> NUMBER .)
+    PLUS            reduce using rule 35 (factor -> NUMBER .)
+    MINUS           reduce using rule 35 (factor -> NUMBER .)
+    SEMICOLON       reduce using rule 35 (factor -> NUMBER .)
+    RIGHT_PAR       reduce using rule 35 (factor -> NUMBER .)
+    DUB_DOT         reduce using rule 35 (factor -> NUMBER .)
+    LOOP            reduce using rule 35 (factor -> NUMBER .)
+
+
+state 73
+
+    (50) assign -> IDENT ASSIGN value . SEMICOLON
+
+    SEMICOLON       shift and go to state 91
+
+
+state 74
+
+    (13) procedure -> PROC IDENT args_opt IS declarations BEGIN statements END IDENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 92
+
+
+state 75
+
+    (51) if -> IF bool_expr THEN . statements elsifs else END IF SEMICOLON
+    (45) statements -> . statements statement
+    (46) statements -> . statement
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    statements                     shift and go to state 93
+    statement                      shift and go to state 45
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+
+state 76
+
+    (36) bool_expr -> bools AND . bools
+    (39) bools -> . LEFT_PAR bool_expr RIGHT_PAR
+    (40) bools -> . LEFT_PAR bool RIGHT_PAR
+    (41) bools -> . bool
+    (42) bools -> . NOT bool
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+
+    LEFT_PAR        shift and go to state 58
+    NOT             shift and go to state 60
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+
+    bools                          shift and go to state 94
+    bool                           shift and go to state 59
+
+state 77
+
+    (37) bool_expr -> bools OR . bools
+    (39) bools -> . LEFT_PAR bool_expr RIGHT_PAR
+    (40) bools -> . LEFT_PAR bool RIGHT_PAR
+    (41) bools -> . bool
+    (42) bools -> . NOT bool
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+
+    LEFT_PAR        shift and go to state 58
+    NOT             shift and go to state 60
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+
+    bools                          shift and go to state 95
+    bool                           shift and go to state 59
+
+state 78
+
+    (39) bools -> LEFT_PAR bool_expr . RIGHT_PAR
+
+    RIGHT_PAR       shift and go to state 96
+
+
+state 79
+
+    (40) bools -> LEFT_PAR bool . RIGHT_PAR
+    (41) bools -> bool .
+
+  ! shift/reduce conflict for RIGHT_PAR resolved as shift
+    RIGHT_PAR       shift and go to state 97
+    AND             reduce using rule 41 (bools -> bool .)
+    OR              reduce using rule 41 (bools -> bool .)
+
+  ! RIGHT_PAR       [ reduce using rule 41 (bools -> bool .) ]
+
+
+state 80
+
+    (42) bools -> NOT bool .
+
+    AND             reduce using rule 42 (bools -> NOT bool .)
+    OR              reduce using rule 42 (bools -> NOT bool .)
+    THEN            reduce using rule 42 (bools -> NOT bool .)
+    LOOP            reduce using rule 42 (bools -> NOT bool .)
+    SEMICOLON       reduce using rule 42 (bools -> NOT bool .)
+    RIGHT_PAR       reduce using rule 42 (bools -> NOT bool .)
+
+
+state 81
+
+    (57) loop -> WHILE bool_expr loop_body .
+
+    END             reduce using rule 57 (loop -> WHILE bool_expr loop_body .)
+    IDENT           reduce using rule 57 (loop -> WHILE bool_expr loop_body .)
+    IF              reduce using rule 57 (loop -> WHILE bool_expr loop_body .)
+    WHILE           reduce using rule 57 (loop -> WHILE bool_expr loop_body .)
+    FOR             reduce using rule 57 (loop -> WHILE bool_expr loop_body .)
+    ELSE            reduce using rule 57 (loop -> WHILE bool_expr loop_body .)
+    ELSIF           reduce using rule 57 (loop -> WHILE bool_expr loop_body .)
+
+
+state 82
+
+    (60) loop_body -> LOOP . statements END LOOP SEMICOLON
+    (45) statements -> . statements statement
+    (46) statements -> . statement
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    statements                     shift and go to state 98
+    statement                      shift and go to state 45
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+
+state 83
+
+    (58) loop -> FOR IDENT IN . expr DUB_DOT expr loop_body
+    (27) expr -> . expr PLUS term
+    (28) expr -> . expr MINUS term
+    (29) expr -> . term
+    (30) term -> . term MUL factor
+    (31) term -> . term DIV factor
+    (32) term -> . factor
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+
+    LEFT_PAR        shift and go to state 100
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+
+    expr                           shift and go to state 99
+    term                           shift and go to state 69
+    factor                         shift and go to state 70
+
+state 84
+
+    (59) loop -> FOR IDENT OF . IDENT loop_body
+
+    IDENT           shift and go to state 101
+
+
+state 85
+
+    (24) declaration -> IDENT COLON type ASSIGN value SEMICOLON .
+
+    BEGIN           reduce using rule 24 (declaration -> IDENT COLON type ASSIGN value SEMICOLON .)
+    IDENT           reduce using rule 24 (declaration -> IDENT COLON type ASSIGN value SEMICOLON .)
+
+
+state 86
+
+    (27) expr -> expr PLUS . term
+    (30) term -> . term MUL factor
+    (31) term -> . term DIV factor
+    (32) term -> . factor
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+
+    LEFT_PAR        shift and go to state 100
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+
+    term                           shift and go to state 102
+    factor                         shift and go to state 70
+
+state 87
+
+    (28) expr -> expr MINUS . term
+    (30) term -> . term MUL factor
+    (31) term -> . term DIV factor
+    (32) term -> . factor
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+
+    LEFT_PAR        shift and go to state 100
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+
+    term                           shift and go to state 103
+    factor                         shift and go to state 70
+
+state 88
+
+    (30) term -> term MUL . factor
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+
+    LEFT_PAR        shift and go to state 100
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+
+    factor                         shift and go to state 104
+
+state 89
+
+    (31) term -> term DIV . factor
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+
+    LEFT_PAR        shift and go to state 100
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+
+    factor                         shift and go to state 105
+
+state 90
+
+    (33) factor -> LEFT_PAR expr . RIGHT_PAR
+    (27) expr -> expr . PLUS term
+    (28) expr -> expr . MINUS term
+
+    RIGHT_PAR       shift and go to state 106
+    PLUS            shift and go to state 86
+    MINUS           shift and go to state 87
+
+
+state 91
+
+    (50) assign -> IDENT ASSIGN value SEMICOLON .
+
+    END             reduce using rule 50 (assign -> IDENT ASSIGN value SEMICOLON .)
+    IDENT           reduce using rule 50 (assign -> IDENT ASSIGN value SEMICOLON .)
+    IF              reduce using rule 50 (assign -> IDENT ASSIGN value SEMICOLON .)
+    WHILE           reduce using rule 50 (assign -> IDENT ASSIGN value SEMICOLON .)
+    FOR             reduce using rule 50 (assign -> IDENT ASSIGN value SEMICOLON .)
+    ELSE            reduce using rule 50 (assign -> IDENT ASSIGN value SEMICOLON .)
+    ELSIF           reduce using rule 50 (assign -> IDENT ASSIGN value SEMICOLON .)
+
+
+state 92
+
+    (13) procedure -> PROC IDENT args_opt IS declarations BEGIN statements END IDENT SEMICOLON .
+
+    $end            reduce using rule 13 (procedure -> PROC IDENT args_opt IS declarations BEGIN statements END IDENT SEMICOLON .)
+
+
+state 93
+
+    (51) if -> IF bool_expr THEN statements . elsifs else END IF SEMICOLON
+    (45) statements -> statements . statement
+    (52) elsifs -> . elsifs elsif
+    (53) elsifs -> . empty
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (1) empty -> .
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    ELSE            reduce using rule 1 (empty -> .)
+    ELSIF           reduce using rule 1 (empty -> .)
+    END             reduce using rule 1 (empty -> .)
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    elsifs                         shift and go to state 107
+    statement                      shift and go to state 55
+    empty                          shift and go to state 108
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+
+state 94
+
+    (36) bool_expr -> bools AND bools .
+
+    THEN            reduce using rule 36 (bool_expr -> bools AND bools .)
+    LOOP            reduce using rule 36 (bool_expr -> bools AND bools .)
+    SEMICOLON       reduce using rule 36 (bool_expr -> bools AND bools .)
+    RIGHT_PAR       reduce using rule 36 (bool_expr -> bools AND bools .)
+
+
+state 95
+
+    (37) bool_expr -> bools OR bools .
+
+    THEN            reduce using rule 37 (bool_expr -> bools OR bools .)
+    LOOP            reduce using rule 37 (bool_expr -> bools OR bools .)
+    SEMICOLON       reduce using rule 37 (bool_expr -> bools OR bools .)
+    RIGHT_PAR       reduce using rule 37 (bool_expr -> bools OR bools .)
+
+
+state 96
+
+    (39) bools -> LEFT_PAR bool_expr RIGHT_PAR .
+
+    AND             reduce using rule 39 (bools -> LEFT_PAR bool_expr RIGHT_PAR .)
+    OR              reduce using rule 39 (bools -> LEFT_PAR bool_expr RIGHT_PAR .)
+    THEN            reduce using rule 39 (bools -> LEFT_PAR bool_expr RIGHT_PAR .)
+    LOOP            reduce using rule 39 (bools -> LEFT_PAR bool_expr RIGHT_PAR .)
+    SEMICOLON       reduce using rule 39 (bools -> LEFT_PAR bool_expr RIGHT_PAR .)
+    RIGHT_PAR       reduce using rule 39 (bools -> LEFT_PAR bool_expr RIGHT_PAR .)
+
+
+state 97
+
+    (40) bools -> LEFT_PAR bool RIGHT_PAR .
+
+    AND             reduce using rule 40 (bools -> LEFT_PAR bool RIGHT_PAR .)
+    OR              reduce using rule 40 (bools -> LEFT_PAR bool RIGHT_PAR .)
+    THEN            reduce using rule 40 (bools -> LEFT_PAR bool RIGHT_PAR .)
+    LOOP            reduce using rule 40 (bools -> LEFT_PAR bool RIGHT_PAR .)
+    SEMICOLON       reduce using rule 40 (bools -> LEFT_PAR bool RIGHT_PAR .)
+    RIGHT_PAR       reduce using rule 40 (bools -> LEFT_PAR bool RIGHT_PAR .)
+
+
+state 98
+
+    (60) loop_body -> LOOP statements . END LOOP SEMICOLON
+    (45) statements -> statements . statement
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    END             shift and go to state 109
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    statement                      shift and go to state 55
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+
+state 99
+
+    (58) loop -> FOR IDENT IN expr . DUB_DOT expr loop_body
+    (27) expr -> expr . PLUS term
+    (28) expr -> expr . MINUS term
+
+    DUB_DOT         shift and go to state 110
+    PLUS            shift and go to state 86
+    MINUS           shift and go to state 87
+
+
+state 100
+
+    (33) factor -> LEFT_PAR . expr RIGHT_PAR
+    (27) expr -> . expr PLUS term
+    (28) expr -> . expr MINUS term
+    (29) expr -> . term
+    (30) term -> . term MUL factor
+    (31) term -> . term DIV factor
+    (32) term -> . factor
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+
+    LEFT_PAR        shift and go to state 100
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+
+    expr                           shift and go to state 90
+    term                           shift and go to state 69
+    factor                         shift and go to state 70
+
+state 101
+
+    (59) loop -> FOR IDENT OF IDENT . loop_body
+    (60) loop_body -> . LOOP statements END LOOP SEMICOLON
+
+    LOOP            shift and go to state 82
+
+    loop_body                      shift and go to state 111
+
+state 102
+
+    (27) expr -> expr PLUS term .
+    (30) term -> term . MUL factor
+    (31) term -> term . DIV factor
+
+    PLUS            reduce using rule 27 (expr -> expr PLUS term .)
+    MINUS           reduce using rule 27 (expr -> expr PLUS term .)
+    SEMICOLON       reduce using rule 27 (expr -> expr PLUS term .)
+    RIGHT_PAR       reduce using rule 27 (expr -> expr PLUS term .)
+    DUB_DOT         reduce using rule 27 (expr -> expr PLUS term .)
+    LOOP            reduce using rule 27 (expr -> expr PLUS term .)
+    MUL             shift and go to state 88
+    DIV             shift and go to state 89
+
+
+state 103
+
+    (28) expr -> expr MINUS term .
+    (30) term -> term . MUL factor
+    (31) term -> term . DIV factor
+
+    PLUS            reduce using rule 28 (expr -> expr MINUS term .)
+    MINUS           reduce using rule 28 (expr -> expr MINUS term .)
+    SEMICOLON       reduce using rule 28 (expr -> expr MINUS term .)
+    RIGHT_PAR       reduce using rule 28 (expr -> expr MINUS term .)
+    DUB_DOT         reduce using rule 28 (expr -> expr MINUS term .)
+    LOOP            reduce using rule 28 (expr -> expr MINUS term .)
+    MUL             shift and go to state 88
+    DIV             shift and go to state 89
+
+
+state 104
+
+    (30) term -> term MUL factor .
+
+    MUL             reduce using rule 30 (term -> term MUL factor .)
+    DIV             reduce using rule 30 (term -> term MUL factor .)
+    PLUS            reduce using rule 30 (term -> term MUL factor .)
+    MINUS           reduce using rule 30 (term -> term MUL factor .)
+    SEMICOLON       reduce using rule 30 (term -> term MUL factor .)
+    RIGHT_PAR       reduce using rule 30 (term -> term MUL factor .)
+    DUB_DOT         reduce using rule 30 (term -> term MUL factor .)
+    LOOP            reduce using rule 30 (term -> term MUL factor .)
+
+
+state 105
+
+    (31) term -> term DIV factor .
+
+    MUL             reduce using rule 31 (term -> term DIV factor .)
+    DIV             reduce using rule 31 (term -> term DIV factor .)
+    PLUS            reduce using rule 31 (term -> term DIV factor .)
+    MINUS           reduce using rule 31 (term -> term DIV factor .)
+    SEMICOLON       reduce using rule 31 (term -> term DIV factor .)
+    RIGHT_PAR       reduce using rule 31 (term -> term DIV factor .)
+    DUB_DOT         reduce using rule 31 (term -> term DIV factor .)
+    LOOP            reduce using rule 31 (term -> term DIV factor .)
+
+
+state 106
+
+    (33) factor -> LEFT_PAR expr RIGHT_PAR .
+
+    MUL             reduce using rule 33 (factor -> LEFT_PAR expr RIGHT_PAR .)
+    DIV             reduce using rule 33 (factor -> LEFT_PAR expr RIGHT_PAR .)
+    PLUS            reduce using rule 33 (factor -> LEFT_PAR expr RIGHT_PAR .)
+    MINUS           reduce using rule 33 (factor -> LEFT_PAR expr RIGHT_PAR .)
+    SEMICOLON       reduce using rule 33 (factor -> LEFT_PAR expr RIGHT_PAR .)
+    RIGHT_PAR       reduce using rule 33 (factor -> LEFT_PAR expr RIGHT_PAR .)
+    DUB_DOT         reduce using rule 33 (factor -> LEFT_PAR expr RIGHT_PAR .)
+    LOOP            reduce using rule 33 (factor -> LEFT_PAR expr RIGHT_PAR .)
+
+
+state 107
+
+    (51) if -> IF bool_expr THEN statements elsifs . else END IF SEMICOLON
+    (52) elsifs -> elsifs . elsif
+    (55) else -> . ELSE statements
+    (56) else -> . empty
+    (54) elsif -> . ELSIF bool_expr THEN statements
+    (1) empty -> .
+
+    ELSE            shift and go to state 114
+    ELSIF           shift and go to state 116
+    END             reduce using rule 1 (empty -> .)
+
+    else                           shift and go to state 112
+    elsif                          shift and go to state 113
+    empty                          shift and go to state 115
+
+state 108
+
+    (53) elsifs -> empty .
+
+    ELSE            reduce using rule 53 (elsifs -> empty .)
+    ELSIF           reduce using rule 53 (elsifs -> empty .)
+    END             reduce using rule 53 (elsifs -> empty .)
+
+
+state 109
+
+    (60) loop_body -> LOOP statements END . LOOP SEMICOLON
+
+    LOOP            shift and go to state 117
+
+
+state 110
+
+    (58) loop -> FOR IDENT IN expr DUB_DOT . expr loop_body
+    (27) expr -> . expr PLUS term
+    (28) expr -> . expr MINUS term
+    (29) expr -> . term
+    (30) term -> . term MUL factor
+    (31) term -> . term DIV factor
+    (32) term -> . factor
+    (33) factor -> . LEFT_PAR expr RIGHT_PAR
+    (34) factor -> . IDENT
+    (35) factor -> . NUMBER
+
+    LEFT_PAR        shift and go to state 100
+    IDENT           shift and go to state 65
+    NUMBER          shift and go to state 72
+
+    expr                           shift and go to state 118
+    term                           shift and go to state 69
+    factor                         shift and go to state 70
+
+state 111
+
+    (59) loop -> FOR IDENT OF IDENT loop_body .
+
+    END             reduce using rule 59 (loop -> FOR IDENT OF IDENT loop_body .)
+    IDENT           reduce using rule 59 (loop -> FOR IDENT OF IDENT loop_body .)
+    IF              reduce using rule 59 (loop -> FOR IDENT OF IDENT loop_body .)
+    WHILE           reduce using rule 59 (loop -> FOR IDENT OF IDENT loop_body .)
+    FOR             reduce using rule 59 (loop -> FOR IDENT OF IDENT loop_body .)
+    ELSE            reduce using rule 59 (loop -> FOR IDENT OF IDENT loop_body .)
+    ELSIF           reduce using rule 59 (loop -> FOR IDENT OF IDENT loop_body .)
+
+
+state 112
+
+    (51) if -> IF bool_expr THEN statements elsifs else . END IF SEMICOLON
+
+    END             shift and go to state 119
+
+
+state 113
+
+    (52) elsifs -> elsifs elsif .
+
+    ELSE            reduce using rule 52 (elsifs -> elsifs elsif .)
+    ELSIF           reduce using rule 52 (elsifs -> elsifs elsif .)
+    END             reduce using rule 52 (elsifs -> elsifs elsif .)
+
+
+state 114
+
+    (55) else -> ELSE . statements
+    (45) statements -> . statements statement
+    (46) statements -> . statement
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    statements                     shift and go to state 120
+    statement                      shift and go to state 45
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+
+state 115
+
+    (56) else -> empty .
+
+    END             reduce using rule 56 (else -> empty .)
+
+
+state 116
+
+    (54) elsif -> ELSIF . bool_expr THEN statements
+    (36) bool_expr -> . bools AND bools
+    (37) bool_expr -> . bools OR bools
+    (38) bool_expr -> . bools
+    (39) bools -> . LEFT_PAR bool_expr RIGHT_PAR
+    (40) bools -> . LEFT_PAR bool RIGHT_PAR
+    (41) bools -> . bool
+    (42) bools -> . NOT bool
+    (43) bool -> . BOOL_T
+    (44) bool -> . BOOL_F
+
+    LEFT_PAR        shift and go to state 58
+    NOT             shift and go to state 60
+    BOOL_T          shift and go to state 61
+    BOOL_F          shift and go to state 62
+
+    bool_expr                      shift and go to state 121
+    bools                          shift and go to state 57
+    bool                           shift and go to state 59
+
+state 117
+
+    (60) loop_body -> LOOP statements END LOOP . SEMICOLON
+
+    SEMICOLON       shift and go to state 122
+
+
+state 118
+
+    (58) loop -> FOR IDENT IN expr DUB_DOT expr . loop_body
+    (27) expr -> expr . PLUS term
+    (28) expr -> expr . MINUS term
+    (60) loop_body -> . LOOP statements END LOOP SEMICOLON
+
+    PLUS            shift and go to state 86
+    MINUS           shift and go to state 87
+    LOOP            shift and go to state 82
+
+    loop_body                      shift and go to state 123
+
+state 119
+
+    (51) if -> IF bool_expr THEN statements elsifs else END . IF SEMICOLON
+
+    IF              shift and go to state 124
+
+
+state 120
+
+    (55) else -> ELSE statements .
+    (45) statements -> statements . statement
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    END             reduce using rule 55 (else -> ELSE statements .)
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    statement                      shift and go to state 55
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+
+state 121
+
+    (54) elsif -> ELSIF bool_expr . THEN statements
+
+    THEN            shift and go to state 125
+
+
+state 122
+
+    (60) loop_body -> LOOP statements END LOOP SEMICOLON .
+
+    END             reduce using rule 60 (loop_body -> LOOP statements END LOOP SEMICOLON .)
+    IDENT           reduce using rule 60 (loop_body -> LOOP statements END LOOP SEMICOLON .)
+    IF              reduce using rule 60 (loop_body -> LOOP statements END LOOP SEMICOLON .)
+    WHILE           reduce using rule 60 (loop_body -> LOOP statements END LOOP SEMICOLON .)
+    FOR             reduce using rule 60 (loop_body -> LOOP statements END LOOP SEMICOLON .)
+    ELSE            reduce using rule 60 (loop_body -> LOOP statements END LOOP SEMICOLON .)
+    ELSIF           reduce using rule 60 (loop_body -> LOOP statements END LOOP SEMICOLON .)
+
+
+state 123
+
+    (58) loop -> FOR IDENT IN expr DUB_DOT expr loop_body .
+
+    END             reduce using rule 58 (loop -> FOR IDENT IN expr DUB_DOT expr loop_body .)
+    IDENT           reduce using rule 58 (loop -> FOR IDENT IN expr DUB_DOT expr loop_body .)
+    IF              reduce using rule 58 (loop -> FOR IDENT IN expr DUB_DOT expr loop_body .)
+    WHILE           reduce using rule 58 (loop -> FOR IDENT IN expr DUB_DOT expr loop_body .)
+    FOR             reduce using rule 58 (loop -> FOR IDENT IN expr DUB_DOT expr loop_body .)
+    ELSE            reduce using rule 58 (loop -> FOR IDENT IN expr DUB_DOT expr loop_body .)
+    ELSIF           reduce using rule 58 (loop -> FOR IDENT IN expr DUB_DOT expr loop_body .)
+
+
+state 124
+
+    (51) if -> IF bool_expr THEN statements elsifs else END IF . SEMICOLON
+
+    SEMICOLON       shift and go to state 126
+
+
+state 125
+
+    (54) elsif -> ELSIF bool_expr THEN . statements
+    (45) statements -> . statements statement
+    (46) statements -> . statement
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    statements                     shift and go to state 127
+    statement                      shift and go to state 45
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+
+state 126
+
+    (51) if -> IF bool_expr THEN statements elsifs else END IF SEMICOLON .
+
+    END             reduce using rule 51 (if -> IF bool_expr THEN statements elsifs else END IF SEMICOLON .)
+    IDENT           reduce using rule 51 (if -> IF bool_expr THEN statements elsifs else END IF SEMICOLON .)
+    IF              reduce using rule 51 (if -> IF bool_expr THEN statements elsifs else END IF SEMICOLON .)
+    WHILE           reduce using rule 51 (if -> IF bool_expr THEN statements elsifs else END IF SEMICOLON .)
+    FOR             reduce using rule 51 (if -> IF bool_expr THEN statements elsifs else END IF SEMICOLON .)
+    ELSE            reduce using rule 51 (if -> IF bool_expr THEN statements elsifs else END IF SEMICOLON .)
+    ELSIF           reduce using rule 51 (if -> IF bool_expr THEN statements elsifs else END IF SEMICOLON .)
+
+
+state 127
+
+    (54) elsif -> ELSIF bool_expr THEN statements .
+    (45) statements -> statements . statement
+    (47) statement -> . assign
+    (48) statement -> . if
+    (49) statement -> . loop
+    (50) assign -> . IDENT ASSIGN value SEMICOLON
+    (51) if -> . IF bool_expr THEN statements elsifs else END IF SEMICOLON
+    (57) loop -> . WHILE bool_expr loop_body
+    (58) loop -> . FOR IDENT IN expr DUB_DOT expr loop_body
+    (59) loop -> . FOR IDENT OF IDENT loop_body
+
+    ELSE            reduce using rule 54 (elsif -> ELSIF bool_expr THEN statements .)
+    ELSIF           reduce using rule 54 (elsif -> ELSIF bool_expr THEN statements .)
+    END             reduce using rule 54 (elsif -> ELSIF bool_expr THEN statements .)
+    IDENT           shift and go to state 43
+    IF              shift and go to state 49
+    WHILE           shift and go to state 50
+    FOR             shift and go to state 51
+
+    statement                      shift and go to state 55
+    assign                         shift and go to state 46
+    if                             shift and go to state 47
+    loop                           shift and go to state 48
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for RIGHT_PAR in state 79 resolved as shift

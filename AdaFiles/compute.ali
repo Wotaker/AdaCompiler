@@ -1,0 +1,22 @@
+V "GNAT Lib v10"
+M P W=b
+P ZX
+
+RN
+
+U compute%b		compute.adb		4c98b3c0 NE OO SU
+W square%b		square.adb		square.ali
+
+D compute.adb		20220114221836 df301dd0 compute%b
+D square.adb		20220114221803 93a8ae10 square%b
+D system.ads		20210408115627 4635ec04 system%s
+G a e
+G c Z b b [compute standard 2 11 none]
+G r c none [compute standard 2 11 none] [square standard 1 10 none]
+X 1 compute.adb
+2U11*Compute 2b11 7l5 7t12
+3i5 A{integer} 6r18
+4i5 B{integer} 6m5
+X 2 square.adb
+1V10*Square{integer} 1|1w6 6s10
+

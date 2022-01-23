@@ -1,0 +1,16 @@
+V "GNAT Lib v10"
+M P W=b
+P ZX
+
+RN
+
+U dbg%b			dbg.adb			49d36970 NE OO SU
+
+D dbg.adb		20220122192830 49d36970 dbg%b
+D system.ads		20210408115627 4635ec04 system%s
+G a e
+G c Z b b [dbg standard 1 11 none]
+X 1 dbg.adb
+1U11*Dbg 1b11 5l5 5t8
+2b5 b{boolean} 4m5
+

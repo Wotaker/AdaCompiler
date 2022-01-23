@@ -1,0 +1,15 @@
+V "GNAT Lib v10"
+P ZX
+
+RN
+
+U square%b		square.adb		93a8ae10 NE OO SU
+
+D square.adb		20220114221803 93a8ae10 square%b
+D system.ads		20210408115627 4635ec04 system%s
+G a e
+G c Z b b [square standard 1 10 none]
+X 1 square.adb
+1V10*Square{integer} 1b10 1>18 4l5 4t11
+1i18 Arg{integer} 3r12 3r18
+
