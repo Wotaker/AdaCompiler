@@ -5,6 +5,12 @@ class CCG():
     ws = " "
     tab = "    "
     nl = "\n"
+    ptype_dict = {
+        "int":      "%d",
+        "float":    "%f",
+        "str":      "%s",
+        "bool":     "%d"
+    }
 
 
     def __init__(self, deriviation_tree) -> None:
@@ -17,11 +23,16 @@ class CCG():
     # ===== Code generating part =====
 
     def gen_prog(self, prog):
-        return (self.gen_headers(prog.childs[0]) if str(prog.childs[0]) == "headers" else "") + \
+        default_headers = """#include <stdio.h>
+#include <stdbool.h>
+
+"""
+        return default_headers +\
+            (self.gen_headers(prog.childs[0]) if str(prog.childs[0]) == "headers" else "") + \
             self.gen_subprogram(prog.childs[-1])
 
     def gen_headers(self, headers):
-        return "headers" + self.nl
+        return ""
     
     def gen_subprogram(self, subprogram):
         return (self.gen_procedure(subprogram.childs[0]) if str(subprogram.childs[0]) == "procedure" \
@@ -80,8 +91,12 @@ class CCG():
         return (f"{self.gen_term(term.childs[0])} {term.childs[1].node.value} " if len(term.childs) == 3 else "") \
             + self.gen_factor(term.childs[-1])
     
-    def gen_factor(self, term):
-        return f"({self.gen_expr(term.childs[1])})" if len(term.childs) == 3 else term.childs[0].node.value
+    def gen_factor(self, factor):
+        if len(factor.childs) == 3:
+            return f"({self.gen_expr(factor.childs[1])})"
+        if factor.childs[0].node == "function_call":
+            return self.gen_function_call(factor.childs[0])
+        return factor.childs[0].node.value
 
     def gen_bool_expr(self, bool_expr):
         if len(bool_expr.childs) == 1:
@@ -113,13 +128,16 @@ class CCG():
             self.gen_statement(stms.childs[-1])
     
     def gen_statement(self, stm):
-        print(stm.childs[0].node)
         if stm.childs[0].node == "assign":
             return self.gen_assign(stm.childs[0])
         if stm.childs[0].node == "if":
             return self.gen_if(stm.childs[0])
         if stm.childs[0].node == "loop":
             return self.gen_loop(stm.childs[0])
+        if stm.childs[0].node == "put_line":
+            return self.gen_put_line(stm.childs[0])
+        if stm.childs[0].node == "function_call":
+            return f"{self.gen_function_call(stm.childs[0])};" 
         else:
             print("ERROR in gen_statement")
     
@@ -173,3 +191,20 @@ class CCG():
         return f"{self.gen_type(func.childs[4])} {func.childs[1].node.value}" +\
             f"{self.gen_args_opt(func.childs[2])} {{\n" + \
             f"{self.gen_declarations(func.childs[6])}{self.gen_ret_statements(func.childs[8])}}}\n"
+    
+    def gen_function_call(self, func_call):
+        return f"{func_call.childs[0].node.value}({self.gen_value(func_call.childs[2])})"
+    
+    def gen_put_line(self, put_line):
+        return self.gen_str_expr(put_line.childs[2]) + 'printf("\\' + 'n");'
+    
+    def gen_str_expr(self, str_expr):
+        return (self.gen_str_expr(str_expr.childs[0]) if len(str_expr.childs) == 3 else "") \
+            + self.gen_str_term(str_expr.childs[-1])
+    
+    def gen_str_term(self, str_term):
+        if len(str_term.childs) == 1:
+            return f'printf({str_term.childs[0].node.value});'
+        else:
+            ptype = self.gen_type(str_term.childs[0])
+            return f'printf(" {self.ptype_dict[ptype]}", {self.gen_value(str_term.childs[4])});'

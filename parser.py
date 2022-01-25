@@ -1,6 +1,12 @@
+import re
 import ply.yacc as yacc
+from scipy.misc import derivative
 from lexer import MyToken, tokens
 from deriviation_tree import DeriveTree
+
+FLAGS = {
+    "PROCEDURE_BODY": False
+}
 
 # === Empty production ===
 def p_empty(p):
@@ -69,6 +75,13 @@ def p_function(p):
         DeriveTree(MyToken("IS", p[6])), p[7], DeriveTree(MyToken("BEGIN", p[8])),
         p[9], DeriveTree(MyToken("END", p[10])), DeriveTree(MyToken("IDENT", p[11])),
         DeriveTree(MyToken("SEMICOLON", p[12]))
+    ])
+
+def p_function_call(p):
+    """function_call : IDENT LEFT_PAR value RIGHT_PAR"""
+    p[0] = DeriveTree("function_call", [
+        DeriveTree(MyToken("IDENT", p[1])), DeriveTree(MyToken("LEFT_PAR", p[2])),
+        p[3], DeriveTree(MyToken("RIGHT_PAR", p[4]))
     ])
 
 def p_procedure(p):
@@ -165,15 +178,23 @@ def p_term(p):
 
 def p_factor(p):
     """factor : LEFT_PAR expr RIGHT_PAR
+              | function_call
               | IDENT
-              | NUMBER"""    # TODO add function_call
+              | NUMBER"""
     if len(p) == 4:
         p[0] = DeriveTree("factor", [DeriveTree(MyToken("LEFT_PAR", p[1])), p[2],
         DeriveTree(MyToken("RIGHT_PAR", p[3]))])
-    elif p[1] in r'[A-Za-z_][A-Za-z0-9_]*':
-        p[0] = DeriveTree("factor", [DeriveTree(MyToken("IDENT", p[1]))])
-    else:
+    elif type(p[1]) != str:
+        p[0] = DeriveTree("factor", [p[1]])
+    elif re.match(r'[-]?(\d+\.)?\d+', p[1]):
         p[0] = DeriveTree("factor", [DeriveTree(MyToken("NUMBER", p[1]))])
+    else:
+        p[0] = DeriveTree("factor", [DeriveTree(MyToken("IDENT", p[1]))])
+
+# cd
+# def p_factor(p):
+#     """factor : IDENT"""
+#     p[0] = DeriveTree("factor", [DeriveTree(MyToken("IDENT", p[1]))])
 
 def p_bool_expr(p):
     """bool_expr : bool_term AND bool_term
@@ -237,8 +258,13 @@ def p_statements(p):
 def p_statement(p):
     """statement : assign
                  | if
-                 | loop"""
-    p[0] = DeriveTree("statement", [p[1]])
+                 | loop
+                 | put_line
+                 | function_call SEMICOLON"""   # TODO CCG add put_line
+    if len(p) == 3:
+        p[0] = DeriveTree("statement", [p[1], DeriveTree(MyToken("SEMICOLON", p[2]))])
+    else:
+        p[0] = DeriveTree("statement", [p[1]])
 
 def p_ret_statements(p):
     """ret_statements : ret_statements ret_statement
@@ -320,6 +346,32 @@ def p_for_range(p):
 def p_while(p):
     """while : WHILE bool_expr"""
     p[0] = DeriveTree("while", [DeriveTree(MyToken("WHILE", p[1])), p[2]])
+
+def p_put_line(p):      # TODO CCG all below
+    """put_line : PUT_LINE LEFT_PAR str_expr RIGHT_PAR SEMICOLON"""
+    p[0] = DeriveTree("put_line", [
+        DeriveTree(MyToken("PUT_LINE", p[1])), DeriveTree(MyToken("LEFT_PAR", p[2])),
+        p[3], DeriveTree(MyToken("RIGHT_PAR", p[4])), DeriveTree(MyToken("SEMICOLON", p[5]))
+    ])
+
+def p_str_expr(p):
+    """str_expr : str_expr AMPERSAND str_term
+                | str_term"""
+    if len(p) == 4:
+        p[0] = DeriveTree("str_expr", [p[1], DeriveTree(MyToken("AMPERSAND", p[2])), p[3]])
+    else:
+        p[0] = DeriveTree("str_expr", [p[1]])
+
+def p_str_term(p):
+    """str_term : STRING
+                | type APOSTROPHE IMAGE LEFT_PAR value RIGHT_PAR"""
+    if len(p) == 2:
+        p[0] = DeriveTree("str_term", [DeriveTree(MyToken("STRING", p[1]))])
+    else:
+        p[0] = DeriveTree("str_term", [
+            p[1], DeriveTree(MyToken("APOSTROPHE", p[2])), DeriveTree(MyToken("IMAGE", p[3])),
+            DeriveTree(MyToken("LEFT_PAR", p[4])), p[5], DeriveTree(MyToken("RIGHT_PAR", p[6]))
+        ])
 
 # === Error Handling Productions ===
 # def p_error(p):

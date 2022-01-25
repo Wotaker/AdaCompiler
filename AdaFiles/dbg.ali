@@ -6,7 +6,7 @@ RN
 RV NO_IO
 RV SPARK_05
 
-U main%b		dbg.adb			5a7beec2 NE OO SU IL
+U main%b		dbg.adb			194a330a NE OO SU IL
 W ada%s			ada.ads			ada.ali
 W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
 W ada.text_io%s		a-textio.adb		a-textio.ali
@@ -22,7 +22,7 @@ D a-tiinio.ads		20210408115627 390edddb ada.text_io.integer_io%s
 D a-unccon.ads		20210408115627 0e9b276f ada.unchecked_conversion%s
 D interfac.ads		20210408115627 5ab55268 interfaces%s
 D i-cstrea.ads		20210408115627 e53d8b8e interfaces.c_streams%s
-D dbg.adb		20220124133810 02c4b20b main%b
+D dbg.adb		20220125205822 41f56fc3 main%b
 D system.ads		20210408115627 4635ec04 system%s
 D s-crtl.ads		20210408115627 0ebbdb71 system.crtl%s
 D s-exctab.ads		20210408115627 54135002 system.exception_table%s
@@ -45,8 +45,9 @@ X 3 a-inteio.ads
 X 7 a-textio.ads
 57K13*Text_IO 727e16 12|1w10 2r9
 X 12 dbg.adb
-6U11*main 6b11 25l5 25t9
+6U11*main 6b11 26l5 26t9
 7V14 Foo{boolean} 7b14 7>19 15l9 15t12
 7i19 x{integer} 10r12
-17i5 x{integer} 23m1
+17i5 x{integer} 22m5 24m1
+20i5 i{integer} 22r10
 

@@ -14,12 +14,13 @@ procedure main is
         end if;
     end Factorial;
 
-    x : Integer;
+    x : Integer := 3;   -- Add support for x: Integer;
 begin
 
-for i in 1..6 loop
-    x := 2;
-    -- Put_Line(Integer'Image(Factorial(i)));
-end loop;
+x := Factorial(6);
+-- for i in 1..6 loop
+--     x := 2;
+--     -- Put_Line(Integer'Image(Factorial(i)));
+-- end loop;
     
 end main;

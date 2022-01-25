@@ -8,18 +8,19 @@ procedure main is
     is
     begin  
         if x > 3 then
-            return True;
+            return TRUE;
         else
-            return False;
+            return FALSE;
         end if;
     end Foo;
 
     x : Integer := 4;
 begin
 
--- for i in 1..6 loop
---     x := 2;
--- end loop;
+for i in 1..6 loop
+    Put_Line("Foo of" & Integer'Image(i) & " is " & Boolean'Image(Foo(i)));
+    x := i;
+end loop;
 x := 2;
     
 end main;

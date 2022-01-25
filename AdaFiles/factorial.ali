@@ -7,7 +7,7 @@ RV NO_IO
 RV NO_RECURSION
 RV SPARK_05
 
-U main%b		factorial.adb		92ddcb19 NE OO SU IL
+U main%b		factorial.adb		4964d8fa NE OO SU IL
 W ada%s			ada.ads			ada.ali
 W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
 W ada.text_io%s		a-textio.adb		a-textio.ali
@@ -23,7 +23,7 @@ D a-tiinio.ads		20210408115627 390edddb ada.text_io.integer_io%s
 D a-unccon.ads		20210408115627 0e9b276f ada.unchecked_conversion%s
 D interfac.ads		20210408115627 5ab55268 interfaces%s
 D i-cstrea.ads		20210408115627 e53d8b8e interfaces.c_streams%s
-D factorial.adb		20220124132758 ca6297d0 main%b
+D factorial.adb		20220125205052 11db8433 main%b
 D system.ads		20210408115627 4635ec04 system%s
 D s-crtl.ads		20210408115627 0ebbdb71 system.crtl%s
 D s-exctab.ads		20210408115627 54135002 system.exception_table%s
@@ -46,9 +46,8 @@ X 3 a-inteio.ads
 X 7 a-textio.ads
 57K13*Text_IO 727e16 12|1w10 2r9
 X 12 factorial.adb
-6U11*main 6b11 25l5 25t9
-7V14 Factorial{integer} 7b14 7>25 11s24 15l9 15t18
+6U11*main 6b11 26l5 26t9
+7V14 Factorial{integer} 7b14 7>25 11s24 15l9 15t18 20s6
 7i25 x{integer} 10r12 11r20 11r34 13r20
-17i5 x{integer} 21m5
-20i5 i{integer}
+17i5 x{integer} 20m1
 

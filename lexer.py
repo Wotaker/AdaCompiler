@@ -44,7 +44,9 @@ reserved = {
     'FALSE':        'BOOL_VAL',
     'Integer':      'TYPE_INT',
     'Boolean':      'TYPE_BOOL',
-    'Float':        'TYPE_FLOAT'
+    'Float':        'TYPE_FLOAT',
+    'Image':        'IMAGE',
+    'Put_Line':     'PUT_LINE'
 }
 
 
@@ -75,7 +77,6 @@ tokens = [
 
     # Other
     'APOSTROPHE',
-    'QUOTE',
     'SEMICOLON',
     'DOT',
     'COMMA',
@@ -87,7 +88,8 @@ tokens = [
     # Complex tokens
     'NUMBER',
     'IDENT',
-    'BOOL'
+    'BOOL',
+    'STRING'
 ] + list(reserved.values())
 
 
@@ -116,8 +118,8 @@ t_LSEQ          = r'<='
 t_GTEQ          = r'>='
 
 # Other
+t_STRING        = r'"[^"]*"'
 t_APOSTROPHE    = r"'"
-t_QUOTE         = r'"'
 t_SEMICOLON     = r';'
 t_DOT           = r'\.'
 t_COMMA         = r','
