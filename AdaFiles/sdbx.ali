@@ -1,19 +1,19 @@
 V "GNAT Lib v10"
-M P W=b
 P ZX
 
 RN
 RV NO_DIRECT_BOOLEAN_OPERATORS
+RV SPARK_05
 
-U sdbx%b		sdbx.adb		2571323c NE OO SU
+U sdbx%b		sdbx.adb		db36d7bd NE OO SU
 
-D sdbx.adb		20220123140133 2571323c sdbx%b
+D sdbx.adb		20220124112241 db36d7bd sdbx%b
 D system.ads		20210408115627 4635ec04 system%s
 G a e
-G c Z b b [sdbx standard 7 11 none]
+G c Z b b [sdbx standard 1 10 none]
 X 1 sdbx.adb
-7U11*Sdbx 7b11 14l5 14t9
-8b5 bt{boolean} 9r34 12r26
-9b5 bf{boolean} 12r19 12r33
-10b5 b_res{boolean} 12m5
+1V10*Sdbx{boolean} 1b10 11l5 11t9
+2b5 bt{boolean} 3r34 6r26
+3b5 bf{boolean} 6r19 6r33
+4b5 b_res{boolean} 6m5 8r16 10r16
 

@@ -1,3 +1,4 @@
+from typing import List
 from lexer import tokens
 
 BRANCH_2 = " ──└"
@@ -13,9 +14,13 @@ class DeriveTree():
         self.childs = childs
     
     def propagate(self):
+        if type(self.childs) != type([1]):      # debug
+            print(self.childs)
         n = len(self.childs)
         i = 0
         for c in self.childs:
+            if (type(c) == str):
+                print(c)       # debug
             i += 1
             c.parent = self
             c.depth = self.depth + 1

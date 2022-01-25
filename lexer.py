@@ -87,7 +87,6 @@ tokens = [
     # Complex tokens
     'NUMBER',
     'IDENT',
-    'TYPE',
     'BOOL'
 ] + list(reserved.values())
 

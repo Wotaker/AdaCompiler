@@ -58,9 +58,18 @@ def p_subprogram(p):
     p[0] = DeriveTree('subprogram', [p[1]])
 
 def p_function(p):
-    '''function : IDENT'''
+    '''function : FUNC IDENT args_opt RETURN type IS declarations BEGIN ret_statements END IDENT SEMICOLON'''
     # TODO end this!!!
-    p[0] = DeriveTree("function", [DeriveTree(MyToken("IDENT", p[1]))])
+    if p[2] is not p[9]:
+        # TODO Error with incosistand proc declaration
+        pass
+    p[0] = DeriveTree("function", [
+        DeriveTree(MyToken("FUNC", p[1])), DeriveTree(MyToken("IDENT", p[2])), p[3],
+        DeriveTree(MyToken("RETURN", p[4])), p[5],
+        DeriveTree(MyToken("IS", p[6])), p[7], DeriveTree(MyToken("BEGIN", p[8])),
+        p[9], DeriveTree(MyToken("END", p[10])), DeriveTree(MyToken("IDENT", p[11])),
+        DeriveTree(MyToken("SEMICOLON", p[12]))
+    ])
 
 def p_procedure(p):
     '''procedure : PROC IDENT args_opt IS declarations BEGIN statements END IDENT SEMICOLON'''
@@ -89,7 +98,7 @@ def p_args(p):
     if len(p) == 4:
         p[0] = DeriveTree("args", [p[1], DeriveTree(MyToken("COMMA", p[2])), p[3]])
     else:
-        p[0] = DeriveTree("args". p[1])
+        p[0] = DeriveTree("args", [p[1]])
 
 def p_arg(p):
     """arg : IDENT COLON type"""
@@ -115,11 +124,17 @@ def p_declarations(p):
         p[0] = DeriveTree("declarations", [p[1]])
 
 def p_declaration(p):
-    """declaration : IDENT COLON type ASSIGN value SEMICOLON"""
-    p[0] = DeriveTree("declaration", [
-        DeriveTree(MyToken("IDENT", p[1])), DeriveTree(MyToken("COLON", p[2])),
-        p[3], DeriveTree(MyToken("ASSIGN", p[4])), p[5], DeriveTree(MyToken("SEMICOLON", p[6]))
-    ])
+    """declaration : empty
+                   | function
+                   | procedure
+                   | IDENT COLON type ASSIGN value SEMICOLON"""
+    if len(p) == 2:
+        p[0] = DeriveTree("declaration", [p[1]])
+    else:
+        p[0] = DeriveTree("declaration", [
+            DeriveTree(MyToken("IDENT", p[1])), DeriveTree(MyToken("COLON", p[2])),
+            p[3], DeriveTree(MyToken("ASSIGN", p[4])), p[5], DeriveTree(MyToken("SEMICOLON", p[6]))
+        ])
 
 def p_value(p):
     """value : expr
@@ -180,14 +195,35 @@ def p_bool_term(p):
 def p_bool(p):
     """bool : LEFT_PAR bool_expr RIGHT_PAR
             | BOOL_VAL
-            | IDENT"""
-    if len(p) == 4:
+            | IDENT
+            | rel_operand rel_operator rel_operand"""
+    if len(p) == 4 and p[1] == "(":
         p[0] = DeriveTree("bool", [DeriveTree(MyToken("LEFT_PAR", p[1])), p[2],
         DeriveTree(MyToken("RIGHT_PAR", p[3]))])
+    elif len(p) == 4:
+        p[0] = DeriveTree("bool", [p[1], p[2], p[3]])
     elif p[1] == "TRUE" or p[1] == "FALSE":
         p[0] = DeriveTree("bool", [DeriveTree(MyToken("BOOL_VAL", p[1]))])
     else:
         p[0] = DeriveTree("bool", [DeriveTree(MyToken("IDENT", p[1]))])
+
+def p_rel_operand(p):               # TODO Change mechanics: operand should be numerical value -> change value
+    """rel_operand : NUMBER
+                   | IDENT"""
+    if p[1][0] in r"[0-9]":
+        p[0] = DeriveTree("rel_operand", [DeriveTree(MyToken("NUMBER", p[1]))])
+    else:
+        p[0] = DeriveTree("rel_operand", [DeriveTree(MyToken("IDENT", p[1]))])
+
+def p_rel_operator(p):
+    """rel_operator : EQUALS
+                    | NOT_EQUALS
+                    | GREATER
+                    | LESS
+                    | GTEQ
+                    | LSEQ"""
+    rel = {"=": "EQUALS", "\=": "NOT_EQUAL", ">": "GREATER", "<": "LESS", ">=": "GTEQ", "<=": "LSEQ"}
+    p[0] = DeriveTree("rel_operator", [DeriveTree(MyToken(rel[p[1]], p[1]))])
 
 def p_statements(p):
     """statements : statements statement
@@ -204,6 +240,24 @@ def p_statement(p):
                  | loop"""
     p[0] = DeriveTree("statement", [p[1]])
 
+def p_ret_statements(p):
+    """ret_statements : ret_statements ret_statement
+                      | ret_statement"""
+    if len(p) == 3:
+        p[0] = DeriveTree("ret_statements", [p[1], p[2]])
+    else:
+        p[0] = DeriveTree("ret_statements", [p[1]])
+
+
+def p_ret_statement(p):
+    """ret_statement : statement
+                     | RETURN value SEMICOLON"""
+    if len(p) == 2:
+        p[0] = DeriveTree("ret_statement", [p[1]])
+    else:
+        p[0] = DeriveTree("ret_statement", [
+            DeriveTree(MyToken("RETURN", p[1])), p[2], DeriveTree(MyToken("SEMICOLON", p[3]))])
+
 def p_assign(p):
     """assign : IDENT ASSIGN value SEMICOLON"""
     p[0] = DeriveTree("assign", [
@@ -211,9 +265,9 @@ def p_assign(p):
         DeriveTree(MyToken("SEMICOLON", p[4]))])
 
 def p_if(p):
-    """if : IF bool_expr THEN statements elsifs else END IF SEMICOLON"""
+    """if : IF bool_expr THEN ret_statements elsifs else END IF SEMICOLON"""
     p[0] = DeriveTree("if", [
-        DeriveTree(MyToken("IF", p[1]), p[2], DeriveTree(MyToken("THEN", p[3]))), p[4], p[5], p[6],
+        DeriveTree(MyToken("IF", p[1])), p[2], DeriveTree(MyToken("THEN", p[3])), p[4], p[5], p[6],
         DeriveTree(MyToken("END", p[7])), DeriveTree(MyToken("IF", p[8])), 
         DeriveTree(MyToken("SEMICOLON", p[9]))
     ])
@@ -224,21 +278,21 @@ def p_elsifs(p):
     if len(p) == 3:
         p[0] = DeriveTree("elsifs", [p[1], p[2]])
     else:
-        p[0] = DeriveTree("elsifs", p[1])
+        p[0] = DeriveTree("elsifs", [p[1]])
 
 def p_elsif(p):
-    """elsif : ELSIF bool_expr THEN statements"""
+    """elsif : ELSIF bool_expr THEN ret_statements"""
     p[0] = DeriveTree("elsif", [
         DeriveTree(MyToken("ELSIF", p[1])), p[2], DeriveTree(MyToken("THEN", p[3])), p[4]
     ])
 
 def p_else(p):
-    """else : ELSE statements
+    """else : ELSE ret_statements
             | empty"""
     if len(p) == 3:
         p[0] = DeriveTree("else", [DeriveTree(MyToken("ELSE", p[1])), p[2]])
     else:
-        p[0] = DeriveTree("else", p[1])
+        p[0] = DeriveTree("else", [p[1]])
 
 def p_loop(p):
     """loop : loop_body

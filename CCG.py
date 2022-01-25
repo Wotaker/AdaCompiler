@@ -22,19 +22,19 @@ class CCG():
 
     def gen_headers(self, headers):
         return "headers" + self.nl
-
-    def gen_subprogram(self, subprogram):
-        return (self.gen_procedure(subprogram.childs[0]) if str(subprogram.childs[0] == "proc") \
-            else self.gen_function(subprogram.childs[0])) + self.nl
     
-    def gen_procedure(self, proc):
+    def gen_subprogram(self, subprogram):
+        return (self.gen_procedure(subprogram.childs[0]) if str(subprogram.childs[0]) == "procedure" \
+            else self.gen_function(subprogram.childs[0]))
+    
+    def gen_procedure(self, proc, main=False):
         name = proc.childs[1].node.value
 
         return f"void {name}{self.gen_args_opt(proc.childs[2])} {{\n" + \
             f"{self.gen_declarations(proc.childs[4])}{self.gen_statements(proc.childs[6])}}}\n"
     
     def gen_args_opt(self, args_opt):
-        return "()" if str(args_opt.childs[0]) == "empty" else \
+        return "()" if args_opt.childs[0].node == "empty" else \
             f"({self.gen_args(args_opt.childs[1])})"
     
     def gen_args(self, args):
@@ -46,7 +46,7 @@ class CCG():
         return f"{self.gen_type(arg.childs[2])} {name}"
 
     def gen_type(sefl, type):
-        ada_type = str(type.childs[0].node.value)
+        ada_type = type.childs[0].node.value
         if ada_type == "Integer":
             return "int"
         elif ada_type == "Float":
@@ -59,8 +59,14 @@ class CCG():
             else "") + self.gen_declaration(declarations.childs[-1])
     
     def gen_declaration(self, declaration):
-        name = declaration.childs[0].node.value
-        return f"{self.gen_type(declaration.childs[2])} {name} = {self.gen_value(declaration.childs[4])};\n"
+        if declaration.childs[0].node == "function":
+            return self.gen_function(declaration.childs[0])
+        if declaration.childs[0].node == "procedure":
+            return self.gen_procedure(declaration.childs[0])
+        if declaration.childs[0].node == "empty":
+            return ""
+        return f"{self.gen_type(declaration.childs[2])} {declaration.childs[0].node.value} = " +\
+            f"{self.gen_value(declaration.childs[4])};\n"
     
     def gen_value(self, value):
         return self.gen_expr(value.childs[0]) if str(value.childs[0]) == "expr" \
@@ -84,32 +90,53 @@ class CCG():
         return self.gen_bool_term(bool_expr.childs[0]) + f" {sign} " + self.gen_bool_term(bool_expr.childs[2])
 
     def gen_bool_term(self, bool_term):
-        return ("!" if len(bool_term.childs) == 2 else "") + self.gen_bool(bool_term.childs[-1])
+        return ("!" if len(bool_term.childs) == 2 else "") + self.gen_bool_factor(bool_term.childs[-1])
 
-    def gen_bool(self, bool_factor):
-        if len(bool_factor.childs) == 3:
+    def gen_bool_factor(self, bool_factor):
+        if len(bool_factor.childs) == 3 and bool_factor.childs[1].node == "bool_expr":
             return f"({self.gen_bool_expr(bool_factor.childs[1])})"
+        if len(bool_factor.childs) == 3 and bool_factor.childs[1].node == "rel_operator":
+            return self.gen_rel_operand(bool_factor.childs[0]) +\
+                f" {self.gen_rel_operator(bool_factor.childs[1])} " + self.gen_rel_operand(bool_factor.childs[2])
         if bool_factor.childs[0].node.name == "IDENT":
             return bool_factor.childs[0].node.value
         return "0" if bool_factor.childs[0].node.value == "FALSE" else "1"
-
-    def gen_statements(self, statements):
-        return (self.gen_statements(statements.childs[0]) if str(statements.childs[0]) == "statements" \
-            else "") + self.gen_statement(statements.childs[-1])
     
-    def gen_statement(self, statement):
-        if statement.childs[0].node == "assign":
-            return self.gen_assign(statement.childs[0])
-        if statement.childs[0].node == "if":
-            return self.gen_if(statement.childs[0])
-        if statement.childs[0].node == "loop":
-            return self.gen_loop(statement.childs[0])
+    def gen_rel_operator(self, rel_operator):
+        return rel_operator.childs[0].node.value
+
+    def gen_rel_operand(self, rel_operand):
+        return rel_operand.childs[0].node.value
+
+    def gen_statements(self, stms):
+        return (self.gen_statements(stms.childs[0]) if str(stms.childs[0]) == "statements" else "") +\
+            self.gen_statement(stms.childs[-1])
+    
+    def gen_statement(self, stm):
+        print(stm.childs[0].node)
+        if stm.childs[0].node == "assign":
+            return self.gen_assign(stm.childs[0])
+        if stm.childs[0].node == "if":
+            return self.gen_if(stm.childs[0])
+        if stm.childs[0].node == "loop":
+            return self.gen_loop(stm.childs[0])
+        else:
+            print("ERROR in gen_statement")
+    
+    def gen_ret_statements(self, ret_stms):
+        return (self.gen_ret_statements(ret_stms.childs[0]) if len(ret_stms.childs) == 2 else "") \
+            + self.gen_ret_statement(ret_stms.childs[-1])
+
+    def gen_ret_statement(self, ret_stm):
+        if len(ret_stm.childs) == 1:
+            return self.gen_statement(ret_stm.childs[0])
+        return f"return {self.gen_value(ret_stm.childs[1])};\n"
     
     def gen_assign(self, assign):
         return f"{assign.childs[0].node.value} = {self.gen_value(assign.childs[2])};\n"
 
     def gen_if(self, if_stm):
-        return f"if ({self.gen_bool_expr(if_stm.childs[1])}) {{\n{self.gen_statements(if_stm.childs[3])}}}\n" +\
+        return f"if ({self.gen_bool_expr(if_stm.childs[1])}) {{\n{self.gen_ret_statements(if_stm.childs[3])}}}\n" +\
             f"{self.gen_elsifs(if_stm.childs[4])}{self.gen_else(if_stm.childs[5])}"
 
     def gen_elsifs(self, elsifs):
@@ -117,11 +144,11 @@ class CCG():
             if len(elsifs.childs) == 2 else ""
 
     def gen_elsif(self, elsif):
-        return f"else if ({self.gen_bool_expr(elsif.childs)}) {{\n{self.gen_statements(elsif.childs[3])}}}\n"
+        return f"else if ({self.gen_bool_expr(elsif.childs)}) {{\n{self.gen_ret_statements(elsif.childs[3])}}}\n"
 
     def gen_else(self, else_stm):
-        if else_stm.childs:
-            return f"else {{\n{self.gen_statements(else_stm.childs[1])}}}\n"
+        if len(else_stm.childs) == 2:
+            return f"else {{\n{self.gen_ret_statements(else_stm.childs[1])}}}\n"
         return ""
 
     def gen_loop(self, loop):
@@ -142,5 +169,7 @@ class CCG():
     def gen_while(self, while_stm):
         return f"while ({self.gen_bool_expr(while_stm.childs[1])}) "
 
-    def gen_function(self, proc):
-        pass
+    def gen_function(self, func):
+        return f"{self.gen_type(func.childs[4])} {func.childs[1].node.value}" +\
+            f"{self.gen_args_opt(func.childs[2])} {{\n" + \
+            f"{self.gen_declarations(func.childs[6])}{self.gen_ret_statements(func.childs[8])}}}\n"

@@ -1,9 +1,9 @@
-with Ada.Text_IO;           
+with Ada.Text_IO;
+use Ada.Text_IO;           
 with Ada.Integer_Text_IO;
 use Ada.Integer_Text_IO;
-use Ada.Text_IO;
 
-procedure Factorial is
+procedure main is
     function Factorial (x: Integer) return Integer
     is
     begin  
@@ -13,10 +13,13 @@ procedure Factorial is
             return x;
         end if;
     end Factorial;
+
+    x : Integer;
 begin
 
 for i in 1..6 loop
-    Put_Line(Integer'Image(Factorial(i)));
+    x := 2;
+    -- Put_Line(Integer'Image(Factorial(i)));
 end loop;
     
-end Factorial;
+end main;
