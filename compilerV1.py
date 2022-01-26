@@ -1,5 +1,6 @@
 import sys
 import os
+import argparse
 from lexer import lexer
 from parser import parser
 from CCG import CCG
@@ -40,7 +41,6 @@ if __name__ == "__main__":
 
     if result and SHOW_TREE:
         print("\n ======= Deriviation Tree =======\n")
-        result.propagate()
         print(result.printTree())
 
     file.close()

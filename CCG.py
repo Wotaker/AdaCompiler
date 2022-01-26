@@ -11,6 +11,10 @@ class CCG():
         "str":      "%s",
         "bool":     "%d"
     }
+    relop_dict = {
+        "=":        "==",
+        "\=":       "!="
+    }
 
 
     def __init__(self, deriviation_tree) -> None:
@@ -99,6 +103,7 @@ class CCG():
         return factor.childs[0].node.value
 
     def gen_bool_expr(self, bool_expr):
+        print(bool_expr)
         if len(bool_expr.childs) == 1:
             return self.gen_bool_term(bool_expr.childs[0])
         sign = "||" if bool_expr.childs[1].node.value == "or" else "&&"
@@ -118,7 +123,7 @@ class CCG():
         return "0" if bool_factor.childs[0].node.value == "FALSE" else "1"
     
     def gen_rel_operator(self, rel_operator):
-        return rel_operator.childs[0].node.value
+        return self.relop_dict.get(rel_operator.childs[0].node.value, rel_operator.childs[0].node.value)
 
     def gen_rel_operand(self, rel_operand):
         return rel_operand.childs[0].node.value
@@ -162,7 +167,7 @@ class CCG():
             if len(elsifs.childs) == 2 else ""
 
     def gen_elsif(self, elsif):
-        return f"else if ({self.gen_bool_expr(elsif.childs)}) {{\n{self.gen_ret_statements(elsif.childs[3])}}}\n"
+        return f"else if ({self.gen_bool_expr(elsif.childs[1])}) {{\n{self.gen_ret_statements(elsif.childs[3])}}}\n"
 
     def gen_else(self, else_stm):
         if len(else_stm.childs) == 2:
@@ -196,7 +201,7 @@ class CCG():
         return f"{func_call.childs[0].node.value}({self.gen_value(func_call.childs[2])})"
     
     def gen_put_line(self, put_line):
-        return self.gen_str_expr(put_line.childs[2]) + 'printf("\\' + 'n");'
+        return self.gen_str_expr(put_line.childs[2]) + 'printf("\\' + 'n");\n'
     
     def gen_str_expr(self, str_expr):
         return (self.gen_str_expr(str_expr.childs[0]) if len(str_expr.childs) == 3 else "") \

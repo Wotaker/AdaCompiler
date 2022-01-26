@@ -29,6 +29,7 @@ class DeriveTree():
             c.propagate()
             
     def printTree(self):
+        self.propagate()
         result = ""
 
         buff = str(self.node)[::-1] if self.childs else f"{str(self.node)[::-1]}"

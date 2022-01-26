@@ -19,7 +19,7 @@ reserved = {
     'begin':        'BEGIN',
     'declare':      'DECLARE',
     'else':         'ELSE',
-    'elseif':       'ELSIF',
+    'elsif':        'ELSIF',
     'end':          'END',
     'for':          'FOR',
     'function':     'FUNC',

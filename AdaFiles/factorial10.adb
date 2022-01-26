@@ -12,6 +12,6 @@ for i in 1..6+5 loop
     acc := acc * i;
 end loop;
 
--- Put_Line(Integer'Image(acc));
+Put_Line(Integer'Image(acc));
     
 end Factorial10;
