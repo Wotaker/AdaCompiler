@@ -25,7 +25,6 @@ if __name__ == "__main__":
     arg_parser.add_argument('--run', action='store_true')
 
     args = arg_parser.parse_args()
-    print(args)
 
     # Open input file
     try:

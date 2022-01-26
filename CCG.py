@@ -103,7 +103,6 @@ class CCG():
         return factor.childs[0].node.value
 
     def gen_bool_expr(self, bool_expr):
-        print(bool_expr)
         if len(bool_expr.childs) == 1:
             return self.gen_bool_term(bool_expr.childs[0])
         sign = "||" if bool_expr.childs[1].node.value == "or" else "&&"
